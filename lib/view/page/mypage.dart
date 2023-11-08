@@ -16,12 +16,12 @@ class _MypageState extends State<Mypage> {
     return SafeArea(
       child: Scaffold(
         // 画面全体の背景色を指定
-        backgroundColor: ColorConst.background,
+        backgroundColor: ColorConst.base,
         // PreferredSizeでAppBarの高さを指定。一時的なAppBarだからcomponentのやつに変わるはず
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(height * 0.1),
           child: AppBar(
-            backgroundColor: ColorConst.background,
+            backgroundColor: ColorConst.base,
             title: Text(
               'BoasTalk',
               style: TextStyle(
@@ -87,7 +87,7 @@ class _MypageState extends State<Mypage> {
             height: 91,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: ShapeDecoration(
-              color: Colors.white,
+              color: ColorConst.white,
               shape: RoundedRectangleBorder(
                 side: BorderSide(
                   width: 5,
@@ -107,7 +107,7 @@ class _MypageState extends State<Mypage> {
                   child: Text(
                     'さとう\nしお\nす\nせいゆ(しょうゆ)\nみそ',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: ColorConst.black,
                       fontSize: 12,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w400,
@@ -245,9 +245,9 @@ class _MypageState extends State<Mypage> {
         width: 240,
         height: 90,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ColorConst.white,
           border: Border.all(
-            color: ColorConst.pink,
+            color: ColorConst.acsent,
             width: 8.0, // 枠線の太さ
           ),
           borderRadius: BorderRadius.circular(20.0),
@@ -261,7 +261,7 @@ class _MypageState extends State<Mypage> {
                 style: TextStyle(
                   fontSize: fontSize, // テキストのフォントサイズ
                   fontWeight: fontBold, // テキストの太さ
-                  color: Colors.black, // テキストの色
+                  color: ColorConst.black, // テキストの色
                 ),
               ),
             ),
