@@ -75,132 +75,83 @@ class _MypageState extends State<Mypage> {
     final fontBold = FontWeight.bold; // 文字の太さ何度も出るから変数に格納
 
     return Container(
-      width: 249,
-      height: 107,
+      height: height * 0.25,
+      width: width * 0.7,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 1),
           Container(
-            height: 91,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: ShapeDecoration(
-              color: ColorConst.white,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  width: 5,
-                  strokeAlign: BorderSide.strokeAlignOutside,
-                  color: Color(0xFFA8DF8E),
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            height: height * 0.08,
+            child: Row(
               children: [
-                SizedBox(
-                  width: double.infinity,
+                Expanded(
+                  // 隙間を埋めるためのウィジェット
                   child: Text(
-                    'さとう\nしお\nす\nせいゆ(しょうゆ)\nみそ',
+                    'UserID',
                     style: TextStyle(
-                      color: ColorConst.black,
-                      fontSize: 12,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
+                      fontSize: fontSize,
+                      fontWeight: fontBold,
                     ),
+                  ),
+                ),
+                Text(
+                  '123456',
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: fontBold,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 1),
+          Container(
+            height: height * 0.08,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Name',
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: fontBold,
+                    ),
+                  ),
+                ),
+                Text(
+                  '田中 太郎',
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: fontBold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: height * 0.08,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Like',
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: fontBold,
+                    ),
+                  ),
+                ),
+                Text(
+                  '🌸  87',
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: fontBold,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
-
-    // return Container(
-    //   height: height * 0.25,
-    //   width: width * 0.7,
-    //   child: Column(
-    //     children: [
-    //       Container(
-    //         height: height * 0.08,
-    //         child: Row(
-    //           children: [
-    //             Expanded(
-    //               // 隙間を埋めるためのウィジェット
-    //               child: Text(
-    //                 'UserID',
-    //                 style: TextStyle(
-    //                   fontSize: fontSize,
-    //                   fontWeight: fontBold,
-    //                 ),
-    //               ),
-    //             ),
-    //             Text(
-    //               '123456',
-    //               style: TextStyle(
-    //                 fontSize: fontSize,
-    //                 fontWeight: fontBold,
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //       Container(
-    //         height: height * 0.08,
-    //         child: Row(
-    //           children: [
-    //             Expanded(
-    //               child: Text(
-    //                 'Name',
-    //                 style: TextStyle(
-    //                   fontSize: fontSize,
-    //                   fontWeight: fontBold,
-    //                 ),
-    //               ),
-    //             ),
-    //             Text(
-    //               '田中 太郎',
-    //               style: TextStyle(
-    //                 fontSize: fontSize,
-    //                 fontWeight: fontBold,
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //       Container(
-    //         height: height * 0.08,
-    //         child: Row(
-    //           children: [
-    //             Expanded(
-    //               child: Text(
-    //                 'Like',
-    //                 style: TextStyle(
-    //                   fontSize: fontSize,
-    //                   fontWeight: fontBold,
-    //                 ),
-    //               ),
-    //             ),
-    //             Text(
-    //               '🌸  87',
-    //               style: TextStyle(
-    //                 fontSize: fontSize,
-    //                 fontWeight: fontBold,
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   Widget _history() {
