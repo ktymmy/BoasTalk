@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 
 //page
 import './view/navibar.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
