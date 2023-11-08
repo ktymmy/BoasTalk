@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:molten_navigationbar_flutter/molten_navigationbar_flutter.dart'; //navibarデザイン
+
+//constant
+import 'package:boastalk/constant/color_Const.dart';
 
 //page
 import './page/home.dart';
@@ -15,25 +19,45 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   static const _pages = [Post(), Home(), Mypage()]; //navibarの位置と紐づけられている
   int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _pages[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.post_add), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(child: _pages[_selectedIndex]),
+        bottomNavigationBar: MoltenBottomNavigationBar(
+          selectedIndex: _selectedIndex,
+          domeHeight: 15,
+          onTabChange: (clickedIndex) {
+            setState(() {
+              _selectedIndex = clickedIndex;
+            });
+          },
+          domeCircleColor: ColorConst.main,
+          barColor: ColorConst.main,
+          tabs: [
+            MoltenTab(
+                icon: Icon(
+                  Icons.search,
+                ),
+                selectedColor: ColorConst.icon,
+                unselectedColor: ColorConst.unselecticon),
+            MoltenTab(
+                icon: Icon(Icons.home),
+                selectedColor: ColorConst.icon,
+                unselectedColor: ColorConst.unselecticon),
+            MoltenTab(
+                icon: Icon(Icons.person),
+                selectedColor: ColorConst.icon,
+                unselectedColor: ColorConst.unselecticon),
           ],
-          type: BottomNavigationBarType.fixed,
-        ));
+        ),
+      ),
+    );
   }
 }
