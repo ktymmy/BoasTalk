@@ -247,7 +247,7 @@ class _MypageState extends State<Mypage> {
         decoration: BoxDecoration(
           color: ColorConst.white,
           border: Border.all(
-            color: ColorConst.acsent,
+            color: ColorConst.accent,
             width: 8.0, // 枠線の太さ
           ),
           borderRadius: BorderRadius.circular(20.0),
