@@ -8,5 +8,6 @@ class ColorConst {
 
   static const Color icon = Color.fromRGBO(49, 152, 0, 1);
   static const Color unselecticon = Colors.white;
+  static const Color black = Colors.black;
 
 }
