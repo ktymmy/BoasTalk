@@ -18,6 +18,7 @@ class _MypageState extends State<Mypage> {
       child: Scaffold(
         // 画面全体の背景色を指定
         backgroundColor: ColorConst.base,
+        // PreferredSizeでAppBarの高さを指定。一時的なAppBarだからcomponentのやつに変わるはず
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(height * 0.1),
             child: AppBarWidget()),
