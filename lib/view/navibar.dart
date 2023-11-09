@@ -19,44 +19,38 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   static const _pages = [Post(), Home(), Mypage()]; //navibarの位置と紐づけられている
   int _selectedIndex = 0;
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(child: _pages[_selectedIndex]),
-        bottomNavigationBar: MoltenBottomNavigationBar(
-          selectedIndex: _selectedIndex,
-          domeHeight: 15,
-          onTabChange: (clickedIndex) {
-            setState(() {
-              _selectedIndex = clickedIndex;
-            });
-          },
-          domeCircleColor: ColorConst.main,
-          barColor: ColorConst.main,
-          tabs: [
-            MoltenTab(
-                icon: Icon(
-                  Icons.search,
-                ),
-                selectedColor: ColorConst.icon,
-                unselectedColor: ColorConst.unselecticon),
-            MoltenTab(
-                icon: Icon(Icons.home),
-                selectedColor: ColorConst.icon,
-                unselectedColor: ColorConst.unselecticon),
-            MoltenTab(
-                icon: Icon(Icons.person),
-                selectedColor: ColorConst.icon,
-                unselectedColor: ColorConst.unselecticon),
-          ],
-        ),
+    return Scaffold(
+      body: Center(child: _pages[_selectedIndex]),
+      bottomNavigationBar: MoltenBottomNavigationBar(
+        selectedIndex: _selectedIndex,
+        barHeight: 84,
+        domeHeight: 15,
+        onTabChange: (clickedIndex) {
+          setState(() {
+            _selectedIndex = clickedIndex;
+          });
+        },
+        domeCircleColor: ColorConst.main,
+        barColor: ColorConst.main,
+        tabs: [
+          MoltenTab(
+              icon: Icon(
+                Icons.search,
+              ),
+              selectedColor: ColorConst.icon,
+              unselectedColor: ColorConst.unselecticon),
+          MoltenTab(
+              icon: Icon(Icons.home),
+              selectedColor: ColorConst.icon,
+              unselectedColor: ColorConst.unselecticon),
+          MoltenTab(
+              icon: Icon(Icons.person),
+              selectedColor: ColorConst.icon,
+              unselectedColor: ColorConst.unselecticon),
+        ],
       ),
     );
   }
