@@ -1,6 +1,5 @@
 import 'package:boastalk/constant/color_Const.dart';
 import 'package:flutter/material.dart';
-import '../component/appbar.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -20,8 +19,19 @@ class _MypageState extends State<Mypage> {
         backgroundColor: ColorConst.base,
         // PreferredSizeでAppBarの高さを指定。一時的なAppBarだからcomponentのやつに変わるはず
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(height * 0.1),
-            child: AppBarWidget()),
+          preferredSize: Size.fromHeight(height * 0.1),
+          child: AppBar(
+            backgroundColor: ColorConst.base,
+            title: Text(
+              'BoasTalk',
+              style: TextStyle(
+                fontSize: fontSize,
+                color: ColorConst.icon,
+              ),
+            ),
+            centerTitle: true, // テキスト真ん中にする
+          ),
+        ),
         body: SingleChildScrollView(
             child: Container(
           child: Column(children: [
