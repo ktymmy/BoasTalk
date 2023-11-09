@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "295369572356",
+    "project_id": "boastalk-a8532",
+    "storage_bucket": "boastalk-a8532.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295369572356:android:8fb5576b205a520ed7f551",
+        "android_client_info": {
+          "package_name": "com.example.boastalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYD_TfGATMUrUraP7YbK42_WVRGgpzBl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
