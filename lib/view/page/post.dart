@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
 import '../navibar.dart';
-import 'home.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -129,6 +128,75 @@ class _PostState extends State<Post> {
         IconButton(
           onPressed: () {
             setState(() {
+              showDialog(
+                context: context,
+                builder: (childContext) {
+                  return SimpleDialog(
+                    backgroundColor: ColorConst.base,
+                    title: Text(
+                        textAlign: TextAlign.center, "写真のアップロード方法を\n選択してください"),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    children: <Widget>[
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(childContext);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 40, right: 40),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: ColorConst.main, width: 5),
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.photo_camera,
+                                color: ColorConst.icon,
+                                size: 28.0,
+                              ),
+                              SizedBox(
+                                width: 35,
+                                height: 40,
+                              ),
+                              Text("カメラ"),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(childContext);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 40, right: 40),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: ColorConst.main, width: 5),
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.add_photo_alternate,
+                                color: ColorConst.icon,
+                                size: 28.0,
+                              ),
+                              SizedBox(
+                                width: 25,
+                                height: 40,
+                              ),
+                              Text("ギャラリー"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
               _visible = !_visible;
             });
           },
