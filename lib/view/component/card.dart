@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../constant/color_Const.dart';
 //model
 import '../../model/post_model.dart';
+//controller
+import '../../controller/post_controller.dart';
 
 class CardComponent extends StatelessWidget {
   final PostModel _post;
@@ -25,20 +27,38 @@ class CardComponent extends StatelessWidget {
       splashFactory: NoSplash.splashFactory,
       splashColor: Colors.transparent,
       //TODO:サイズ調整
-      child: Card(
-        color: ColorConst.cardBackground, //Card自体の色
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            //TODO:条件分岐
-            side: BorderSide(width: 2, color: ColorConst.main)), //枠線の変更
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [Text(post.contents)],
+      child: Container(
+        height: 100,
+        width: 350,
+        child: Card(
+          color: ColorConst.cardBackground, //Card自体の色
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(width: 2, color: border())), //枠線の変更
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    post.contents,
+                    overflow: TextOverflow.ellipsis,
+                    // textAlign: TextAlign.left,
+                    maxLines: 3,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+//枠線の色判定
+  Color border() {
+    return _post.id % 2 == 0 ? ColorConst.cardFrame1 : ColorConst.cardFrame2;
   }
 }
