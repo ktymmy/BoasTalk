@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
-
 //svg
 import 'package:flutter_svg/flutter_svg.dart';
+//const
+import '../../constant/color_Const.dart';
 
-class AppBarWidget extends StatefulWidget {
-  const AppBarWidget({super.key});
+class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
+  const AppbarComponent({Key? key}) : super(key: key);
 
-  @override
-  State<AppBarWidget> createState() => _AppBarWidgetState();
-}
-
-class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: SvgPicture.asset('images/BoasTalk.svg'),
-        )
-      ],
+    return AppBar(
+      backgroundColor: ColorConst.base,
+      elevation: 0,
+      centerTitle: true,
+      title: Padding(
+        padding: EdgeInsets.only(left: 24.0, top: 16.0),
+        child: SvgPicture.asset('assets/images/BoasTalk.svg'),
+
+        //TODO:webでrunする場合
+        //child: SvgPicture.asset('images/BoasTalk.svg'),
+      ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
