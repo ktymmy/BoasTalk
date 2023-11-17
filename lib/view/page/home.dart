@@ -32,6 +32,8 @@ class _HomeState extends State<Home> {
       backgroundColor: ColorConst.base,
       floatingActionButton: bt(),
       body: Container(
+        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+        height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: _card(),
         ),
