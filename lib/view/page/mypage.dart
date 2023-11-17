@@ -7,6 +7,7 @@ import '../component/appbar.dart';
 import '../component/card.dart';
 //Model
 import '../../model/post_model.dart';
+//controller
 import '../../controller/post_controller.dart';
 
 class Mypage extends StatefulWidget {

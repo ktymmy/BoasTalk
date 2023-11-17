@@ -47,6 +47,60 @@ class PostController {
         imgPath: 'assets/images/noimage.svg',
         contents: 'はぴはぴ～～',
         date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
+    PostModel(
+        id: 7,
+        userId: 5,
+        imgPath: 'assets/images/noimage.svg',
+        contents: 'はぴはぴ～～',
+        date: DateTime.now()),
   ];
 
   List<PostModel> get post => _posts;
