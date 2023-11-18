@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 //constant
@@ -7,8 +9,10 @@ import '../component/appbar.dart';
 import '../component/card.dart';
 //Model
 import '../../model/post_model.dart';
+import '../../model/users_model.dart';
 //controller
 import '../../controller/post_controller.dart';
+import '../../controller/mypage_controller.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -19,10 +23,17 @@ class Mypage extends StatefulWidget {
 
 class _MypageState extends State<Mypage> {
   List<PostModel> _posts = [];
+  List<UsersModel> _users = [];
 
+  @override
   void initState() {
     super.initState();
+    listState();
+  }
+
+  void listState() {
     _posts = PostController().post;
+    _users = MypageController().user;
   }
 
   @override
@@ -49,21 +60,25 @@ class _MypageState extends State<Mypage> {
                 ),
               ],
             ),
-            // プロフィール
             _UserProfileWidget(),
             // 枠線
             Container(
-                height: height * 0.4,
+                height: height * 0.59,
                 width: width * 0.85,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: ColorConst.main,
-                    width: 5.0,
+                    width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: SingleChildScrollView(
-                  child: _card(),
+                child: Container(
+                  height: height * 0.5,
+                  width: width * 0.8,
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.all(12),
+                    child: _card(),
+                  ),
                 )),
           ],
         ),
@@ -71,14 +86,15 @@ class _MypageState extends State<Mypage> {
     );
   }
 
-  Widget _UserProfileWidget() {
-    final height = MediaQuery.of(context).size.height; // 高さ何度も出るから変数に格納
-    final width = MediaQuery.of(context).size.width; // 横幅何度も出るから変数に格納
-    final double fontSize = 16; // 文字サイズ何度も出るから変数に格納
-    final fontBold = FontWeight.bold; // 文字の太さ何度も出るから変数に格納
+//プロフィール
+  _UserProfileWidget() {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final double fontSize = 16;
+    final fontBold = FontWeight.bold;
 
     return Container(
-      height: height * 0.25,
+      // height: height * 0.25,
       width: width * 0.7,
       child: Column(
         children: [
@@ -87,33 +103,15 @@ class _MypageState extends State<Mypage> {
             child: Row(
               children: [
                 Text(
-                  '123456',
+                  _users.isNotEmpty ? _users[0].userName : '',
                   style: TextStyle(
                     fontSize: fontSize,
                     fontWeight: fontBold,
                   ),
                 ),
-              ],
-            ),
-          ),
-          Container(
-            height: height * 0.08,
-            child: Row(
-              children: [
-                Text(
-                  '田中 太郎',
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    fontWeight: fontBold,
-                  ),
+                SizedBox(
+                  width: width * 0.3,
                 ),
-              ],
-            ),
-          ),
-          Container(
-            height: height * 0.08,
-            child: Row(
-              children: [
                 Text(
                   '🌸  87',
                   style: TextStyle(
@@ -130,6 +128,7 @@ class _MypageState extends State<Mypage> {
   }
 
   Widget _card() {
+    final height = MediaQuery.of(context).size.height;
     return Column(
       children: [
         ListView.builder(
@@ -139,7 +138,8 @@ class _MypageState extends State<Mypage> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 10),
+                SizedBox(height: height * 0.01), //cardとcardの間
+
                 CardComponent(
                   post: _posts[index],
                   onTap: () {},
