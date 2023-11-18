@@ -10,6 +10,7 @@ class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      // toolbarHeight: 100,
       backgroundColor: ColorConst.base,
       elevation: 0,
       centerTitle: true,

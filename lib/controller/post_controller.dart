@@ -33,7 +33,7 @@ class PostController {
         id: 5,
         userId: 3,
         imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～',
+        contents: 'いぇーーーーーいテスト100てええええん！！！',
         date: DateTime.now()),
     PostModel(
         id: 6,
