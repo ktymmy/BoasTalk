@@ -19,44 +19,47 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   static const _pages = [Post(), Home(), Mypage()]; //navibarの位置と紐づけられている
   int _selectedIndex = 0;
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(child: _pages[_selectedIndex]),
-        bottomNavigationBar: MoltenBottomNavigationBar(
-          selectedIndex: _selectedIndex,
-          domeHeight: 15,
-          onTabChange: (clickedIndex) {
-            setState(() {
-              _selectedIndex = clickedIndex;
-            });
-          },
-          domeCircleColor: ColorConst.main,
-          barColor: ColorConst.main,
-          tabs: [
-            MoltenTab(
-                icon: Icon(
-                  Icons.search,
-                ),
-                selectedColor: ColorConst.icon,
-                unselectedColor: ColorConst.unselecticon),
-            MoltenTab(
-                icon: Icon(Icons.home),
-                selectedColor: ColorConst.icon,
-                unselectedColor: ColorConst.unselecticon),
-            MoltenTab(
-                icon: Icon(Icons.person),
-                selectedColor: ColorConst.icon,
-                unselectedColor: ColorConst.unselecticon),
-          ],
-        ),
+    return Scaffold(
+      backgroundColor: ColorConst.base,
+      body: Center(child: _pages[_selectedIndex]),
+      bottomNavigationBar: MoltenBottomNavigationBar(
+        selectedIndex: _selectedIndex,
+        domeHeight: 15,
+        barHeight: 80,
+        onTabChange: (clickedIndex) {
+          setState(() {
+            _selectedIndex = clickedIndex;
+          });
+        },
+        domeCircleColor: ColorConst.main,
+        barColor: ColorConst.main,
+        borderColor: ColorConst.black,
+        tabs: [
+          MoltenTab(
+              icon: Icon(
+                Icons.add_comment_outlined,
+                size: 40,
+              ),
+              selectedColor: ColorConst.icon,
+              unselectedColor: ColorConst.unselecticon),
+          MoltenTab(
+              icon: Icon(
+                Icons.home,
+                size: 40,
+              ),
+              selectedColor: ColorConst.icon,
+              unselectedColor: ColorConst.unselecticon),
+          MoltenTab(
+              icon: Icon(
+                Icons.person,
+                size: 40,
+              ),
+              selectedColor: ColorConst.icon,
+              unselectedColor: ColorConst.unselecticon),
+        ],
       ),
     );
   }
