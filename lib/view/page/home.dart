@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 //constant
 import '../../constant/color_Const.dart';
 //component
@@ -17,7 +16,6 @@ import 'package:boastalk/controller/post_controller.dart';
 import '../page/moment.dart';
 import '../page/random.dart';
 
-
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -26,15 +24,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-
   String currentIcon = 'images/MomentIcon.svg'; //現在のアイコン定義
 
-  void toggleIcon(){ //ボタン画像切替メソッド  
+  void toggleIcon() {
+    //ボタン画像切替メソッド
     setState(() {
-      currentIcon == 'images/MomentIcon.svg' 
-              ? currentIcon = 'images/RandomIcon.svg'
-              : currentIcon = 'images/MomentIcon.svg';
+      currentIcon == 'images/MomentIcon.svg'
+          ? currentIcon = 'images/RandomIcon.svg'
+          : currentIcon = 'images/MomentIcon.svg';
     });
   }
 
@@ -45,7 +42,6 @@ class _HomeState extends State<Home> {
     _posts = PostController().post;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,30 +49,22 @@ class _HomeState extends State<Home> {
       backgroundColor: ColorConst.base,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if(currentIcon == 'images/MomentIcon.svg'){
+          if (currentIcon == 'images/MomentIcon.svg') {
             Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (context) => Moment())
-              );
-          }else if(currentIcon == 'images/RandomIcon.svg'){
+                context, MaterialPageRoute(builder: (context) => Moment()));
+          } else if (currentIcon == 'images/RandomIcon.svg') {
             Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (context) => Random())
-              );
+                context, MaterialPageRoute(builder: (context) => Random()));
           }
 
           toggleIcon(); //アイコン切替メソッド予備だし
 
           // 2秒待機後にhome.dartに戻る
           await Future.delayed(Duration(seconds: 1));
-                Navigator.pop(context);
+          Navigator.pop(context);
         },
-
-        child: (SvgPicture.asset(currentIcon))
-
-      ,)
-
-      
+        child: (SvgPicture.asset(currentIcon)),
+      ),
       body: Container(
         padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
         height: MediaQuery.of(context).size.height,
@@ -84,7 +72,6 @@ class _HomeState extends State<Home> {
           child: _card(),
         ),
       ),
-
     );
   }
 
@@ -111,6 +98,4 @@ class _HomeState extends State<Home> {
       ],
     );
   }
-
- 
 }
