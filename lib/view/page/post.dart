@@ -60,7 +60,9 @@ class _PostState extends State<Post> {
           child: Column(children: [
             _Image(),
             _Text(),
-            _Icons(),
+            Row(
+              children: [_photoIcon(), _sendIcon()],
+            ),
           ]),
         )),
       ),
@@ -123,109 +125,114 @@ class _PostState extends State<Post> {
     );
   }
 
-  Widget _Icons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: () {
-            setState(() {
-              showDialog(
-                context: context,
-                builder: (childContext) {
-                  return AlertDialog(
-                    backgroundColor: ColorConst.base,
-                    title: Text(
-                      "写真のアップロード方法を\n選択してください",
-                      textAlign: TextAlign.center,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
+//写真選択
+  Widget _photoIcon() {
+    return IconButton(
+      onPressed: () {
+        SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: _dialog());
+      },
+      icon: Icon(
+        Icons.add_photo_alternate,
+        color: ColorConst.icon,
+        size: 37.0,
+      ),
+    );
+  }
 
-                    contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10), // 必要に応じてパディングを調整
+//送信
+  Widget _sendIcon() {
+    return IconButton(
+      onPressed: () {
+        // TODO:
+      },
+      icon: Icon(
+        Icons.send,
+        color: ColorConst.icon,
+        size: 37.0,
+      ),
+    );
+  }
 
-                    content: Column(
-                      children: <Widget>[
-                        OutlinedButton(
-                          onPressed: () {
-                            Navigator.pop(childContext);
-                            getImageFromCamera(); // 画像を取得する関数を呼び出す
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: ColorConst.main, width: 5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.photo_camera,
-                                color: ColorConst.icon,
-                                size: 28.0,
-                              ),
-                              SizedBox(
-                                width: 35,
-                                height: 40,
-                              ),
-                              Text("カメラ"),
-                            ],
-                          ),
+//ダイアログ
+  _dialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              insetPadding: EdgeInsets.fromLTRB(5, 200, 5, 200),
+
+              backgroundColor: ColorConst.base,
+              title: Text(
+                "写真のアップロード方法を\n選択してください",
+                textAlign: TextAlign.center,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+
+              // contentPadding: EdgeInsets.symmetric(
+              //     horizontal: 20, vertical: 10), // 必要に応じてパディングを調整
+
+              content: Column(
+                children: <Widget>[
+                  OutlinedButton(
+                    onPressed: () {
+                      // Navigator.pop(childContext);
+                      getImageFromCamera(); // 画像を取得する関数を呼び出す
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: ColorConst.main, width: 5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.photo_camera,
+                          color: ColorConst.icon,
+                          size: 28.0,
                         ),
-                        OutlinedButton(
-                          onPressed: () {
-                            Navigator.pop(childContext);
-                            getImageFromGarally(); // 画像を取得する関数を呼び出す
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: ColorConst.main, width: 5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.add_photo_alternate,
-                                color: ColorConst.icon,
-                                size: 28.0,
-                              ),
-                              SizedBox(
-                                width: 25,
-                                height: 40,
-                              ),
-                              Text("ギャラリー"),
-                            ],
-                          ),
+                        SizedBox(
+                          width: 35,
+                          height: 40,
                         ),
+                        Text("カメラ"),
                       ],
                     ),
-                  );
-                },
-              );
-              _visible = !_visible;
-            });
-          },
-          icon: Icon(
-            Icons.add_photo_alternate,
-            color: ColorConst.icon,
-            size: 37.0,
-          ),
-        ),
-        IconButton(
-          onPressed: () {
-            // TODO:
-          },
-          icon: Icon(
-            Icons.send,
-            color: ColorConst.icon,
-            size: 37.0,
-          ),
-        ),
-      ],
-    );
+                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      // Navigator.pop(childContext);
+                      getImageFromGarally(); // 画像を取得する関数を呼び出す
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: ColorConst.main, width: 5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.add_photo_alternate,
+                          color: ColorConst.icon,
+                          size: 28.0,
+                        ),
+                        SizedBox(
+                          width: 25,
+                          height: 40,
+                        ),
+                        Text("ギャラリー"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ));
+    _visible = !_visible;
   }
 
   Future getImageFromGarally() async {
