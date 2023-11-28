@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
 import '../navibar.dart';
+import '../component/appbar.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Post extends StatefulWidget {
@@ -23,45 +24,18 @@ class _PostState extends State<Post> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConst.base,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(height * 0.1),
-          child: AppBar(
-            backgroundColor: ColorConst.base,
-            title: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => (Navigation())),
-                      //TODO
-                    );
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: ColorConst.icon,
-                    size: 37.0,
-                  ),
-                ),
-                Text(
-                  'BoasTalk',
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    color: ColorConst.icon,
-                  ),
-                ),
-              ],
-            ),
-            centerTitle: true, // テキスト真ん中にする
-          ),
-        ),
+        appBar: const AppbarComponent(),
         body: SingleChildScrollView(
             child: Container(
           child: Column(children: [
-            _Image(),
+            Visibility(
+              visible: _visible,
+              child: _Image(),
+            ),
             _Text(),
             Row(
               children: [_photoIcon(), _sendIcon()],
+              // TODO:アイコンの位置
             ),
           ]),
         )),
@@ -85,13 +59,17 @@ class _PostState extends State<Post> {
         padding: EdgeInsets.all(10.0), // 余白
         child: SizedBox(
           height: 250,
-          //   width: 325,
+          width: 325,
           child: _image == null
               ? Text(
                   '写真を選択してください',
                   style: Theme.of(context).textTheme.headline4,
                 )
-              : Image.file(File(_image!.path)),
+              : ImageContainer(
+                  height: 250,
+                  cornerRadius: 15,
+                  image: Image.file(File(_image!.path)).image,
+                ),
         ),
       ),
     );
@@ -146,7 +124,7 @@ class _PostState extends State<Post> {
   Widget _sendIcon() {
     return IconButton(
       onPressed: () {
-        // TODO:
+        // TODO送信時の動き
       },
       icon: Icon(
         Icons.send,
@@ -161,7 +139,7 @@ class _PostState extends State<Post> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              insetPadding: EdgeInsets.fromLTRB(5, 200, 5, 200),
+              insetPadding: EdgeInsets.fromLTRB(5, 275, 5, 275),
 
               backgroundColor: ColorConst.base,
               title: Text(
@@ -232,7 +210,6 @@ class _PostState extends State<Post> {
                 ],
               ),
             ));
-    _visible = !_visible;
   }
 
   Future getImageFromGarally() async {
@@ -240,6 +217,7 @@ class _PostState extends State<Post> {
     setState(() {
       if (pickedFile != null) {
         _image = XFile(pickedFile.path);
+        _visible = true;
       }
     });
   }
@@ -249,7 +227,23 @@ class _PostState extends State<Post> {
     setState(() {
       if (pickedFile != null) {
         _image = XFile(pickedFile.path);
+        _visible = true;
       }
     });
+  }
+
+  static Widget ImageContainer(
+      {double? height,
+      double? width,
+      required double cornerRadius,
+      required ImageProvider image,
+      Widget? child}) {
+    return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
+            image: DecorationImage(fit: BoxFit.cover, image: image)),
+        child: child);
   }
 }
