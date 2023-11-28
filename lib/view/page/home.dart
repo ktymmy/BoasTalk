@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constant/color_Const.dart';
 import '../component/appbar.dart';
-import '../page/mypage.dart';
+import '../page/moment.dart';
+import '../page/random.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,6 +13,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  String currentIcon = 'images/MomentIcon.svg'; //現在のアイコン定義
+
+  void toggleIcon(){ //ボタン画像切替メソッド  ここから
+    setState(() {
+      currentIcon == 'images/MomentIcon.svg' 
+              ? currentIcon = 'images/RandomIcon.svg'
+              : currentIcon = 'images/MomentIcon.svg';
+    });
+  }//ここまで
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,42 +32,31 @@ class _HomeState extends State<Home> {
         child: AppBarWidget(),),
       
       backgroundColor: ColorConst.base,
-      
 
-      body: Stack(
-          children: [
-            // ここに他のウィジェットを配置できます
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          if(currentIcon == 'images/MomentIcon.svg'){
+            Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => Moment())
+              );
+          }else if(currentIcon == 'images/RandomIcon.svg'){
+            Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => Random())
+              );
+          }
 
-            //切替ボタンの背景
-            Positioned(
-              bottom: 16.0, // 下端からの距離
-              right: 16.0, // 右端からの距離
-              child: Icon(
-                Icons.circle,
-                size: 70, // アイコンのサイズ
-                color: Color.fromRGBO(168, 223, 142,1), // アイコンの色
-              ),
-            ),
+          toggleIcon(); //アイコン切替メソッド予備だし
 
+          // 2秒待機後にhome.dartに戻る
+          await Future.delayed(Duration(seconds: 1));
+                Navigator.pop(context);
+        },
 
-            //切替ボタン
-            Positioned(
-              bottom: 15.5, // 下端からの距離
-              right: 15.5, // 右端からの距離
-              child: IconButton(
-                icon: const
-                Icon(Icons.access_time_filled),
-                iconSize: 55,
-                color: Color.fromRGBO(49, 152, 0, 1),
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => Mypage()
-                    ));
-                },
-              ),
-            )
-          ],
-      ),
+        child: (SvgPicture.asset(currentIcon))
+
+      ,)
     );
   }
 
