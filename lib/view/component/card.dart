@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; //svg
 
@@ -22,59 +24,111 @@ class CardComponent extends StatelessWidget {
     return _Card(_post, context);
   }
 
+  //1 画面遷移
+
+  // Widget _Card(PostModel post, BuildContext context) {
+  //   final height = MediaQuery.of(context).size.height;
+  //   final width = MediaQuery.of(context).size.width;
+
+  //   return InkWell(
+  //     onTap: _onTap,
+  //     splashFactory: NoSplash.splashFactory,
+  //     splashColor: Colors.transparent,
+
+  //     child: Container(
+  //       height: height * 0.15,
+  //       width: width * 0.9,
+  //       child: Card(
+  //         color: ColorConst.cardBackground, //Card自体の色
+
+  //         elevation: 3,
+  //         shadowColor: border(),
+  //         shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(20),
+  //             side: BorderSide(width: 1, color: border())),
+
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(12.0),
+  //           child: Stack(
+  //             children: [
+  //               Container(
+  //                 height: height * 0.14,
+  //                 width: width * 0.75,
+  //                 padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
+  //                 alignment: Alignment.topLeft,
+  //                 child: Text(
+  //                   post.contents,
+  //                   overflow: TextOverflow.ellipsis,
+  //                   maxLines: 3,
+  //                   style: const TextStyle(fontWeight: FontWeight.normal),
+  //                 ),
+  //               ),
+  //               Positioned(
+  //                   //位置
+  //                   top: height * 0.04,
+  //                   right: width * 0.01,
+  //                   child:
+  //                      Container(
+  //                     alignment: Alignment.bottomRight,
+  //                     //大きさ
+  //                     height: height * 0.1,
+  //                     width: width * 0.1,
+  //                     // child: AnimationFlower(),
+  //                     child: GestureDetector(
+  //                         onTap: () {
+  //                           AnimationFlower();
+  //                         },
+  //                         child: SvgPicture.asset('images/flower/5.svg')),
+  //                   )),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Widget _Card(PostModel post, BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    return InkWell(
-      onTap: _onTap,
-      splashFactory: NoSplash.splashFactory,
-      splashColor: Colors.transparent,
-      //TODO:サイズ調整
-      child: Container(
-        height: height * 0.15,
-        width: width * 0.9,
-        child: Card(
-          color: ColorConst.cardBackground, //Card自体の色
-
-          elevation: 3,
-          shadowColor: border(),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(width: 1, color: border())),
-
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Stack(
-              children: [
-                Container(
-                  height: height * 0.14,
-                  width: width * 0.75,
-                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    post.contents,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: const TextStyle(fontWeight: FontWeight.normal),
-                  ),
-                ),
-                Positioned(
-                  //位置
-                  top: height * 0.04,
-                  right: width * 0.01,
-                  child: Container(
-                      alignment: Alignment.bottomRight,
-                      //大きさ
-                      height: height * 0.1,
-                      width: width * 0.1,
-                      // child: AnimationFlower(),
-                      child: SvgPicture.asset('images/flower/5.svg')),
-                )
-              ],
-            ),
+    return Container(
+      width: width * 0.9,
+      constraints: BoxConstraints(
+        minHeight: height * 0.15,
+      ),
+      child: ExpansionTile(
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            width: 1,
+            color: border(),
           ),
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            width: 1,
+            color: border(),
+          ),
+        ),
+        onExpansionChanged: (bool expanded) {},
+        backgroundColor: ColorConst.cardBackground,
+        collapsedBackgroundColor: ColorConst.cardBackground,
+        initiallyExpanded: false,
+        title: Text(
+          post.contents,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 3,
+          style: const TextStyle(fontWeight: FontWeight.normal),
+        ),
+        children: <Widget>[
+          SizedBox(
+            height: height * 0.3,
+            width: width * 0.8,
+            child: SvgPicture.asset('images/noimage.svg'),
+          )
+        ],
       ),
     );
   }

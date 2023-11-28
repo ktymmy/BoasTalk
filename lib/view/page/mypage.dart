@@ -49,13 +49,14 @@ class _MypageState extends State<Mypage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                //TODO:横揃える
                 SizedBox(
                   height: height * 0.1,
-                  width: width * 0.15,
+                  width: width * 0.3,
                   child: const Icon(
                     Icons.settings,
                     color: ColorConst.icon,
-                    size: 37.0,
+                    size: 25.0,
                   ),
                 ),
               ],
@@ -72,13 +73,44 @@ class _MypageState extends State<Mypage> {
                   ),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: Container(
-                  height: height * 0.5,
-                  width: width * 0.8,
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(12),
-                    child: _card(),
-                  ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: width * 0.3,
+                        ),
+                        Text(
+                          '今日の投稿',
+                          style: TextStyle(color: ColorConst.main),
+                        ),
+                        SizedBox(
+                          width: width * 0.2,
+                        ),
+                        Container(
+                          width: width * 0.01,
+                          child: IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.calendar_month_outlined,
+                                color: ColorConst.icon,
+                                size: 25,
+                              )),
+                        )
+                      ],
+                    ),
+                    Container(
+                      height: height * 0.5,
+                      width: width * 0.8,
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.all(12),
+                        child: _card(),
+                      ),
+                    ),
+                  ],
                 )),
           ],
         ),
@@ -128,7 +160,6 @@ class _MypageState extends State<Mypage> {
   }
 
   Widget _card() {
-    final height = MediaQuery.of(context).size.height;
     return Column(
       children: [
         ListView.builder(
@@ -138,8 +169,6 @@ class _MypageState extends State<Mypage> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: height * 0.01), //cardとcardの間
-
                 CardComponent(
                   post: _posts[index],
                   onTap: () {},
