@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
 import '../navibar.dart';
-import 'home.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -12,6 +13,8 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   bool _visible = false;
+  XFile? _image;
+  final imagePicker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class _PostState extends State<Post> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => (Navigation())),
+                      //TODO
                     );
                   },
                   icon: Icon(
@@ -54,10 +58,7 @@ class _PostState extends State<Post> {
         body: SingleChildScrollView(
             child: Container(
           child: Column(children: [
-            Visibility(
-              visible: _visible,
-              child: _Image(),
-            ),
+            _Image(),
             _Text(),
             _Icons(),
           ]),
@@ -78,17 +79,17 @@ class _PostState extends State<Post> {
         ),
       ),
       margin: EdgeInsets.fromLTRB(20, 20, 10, 5), // 余白
-      child: const Padding(
+      child: Padding(
         padding: EdgeInsets.all(10.0), // 余白
         child: SizedBox(
           height: 250,
-          width: 325,
-          child: TextField(
-            keyboardType: TextInputType.multiline, // 複数行入力できるようにする
-            maxLines: null,
-            decoration:
-                InputDecoration(border: InputBorder.none, hintText: 'テキストを入力'),
-          ),
+          //   width: 325,
+          child: _image == null
+              ? Text(
+                  '写真を選択してください',
+                  style: Theme.of(context).textTheme.headline4,
+                )
+              : Image.file(File(_image!.path)),
         ),
       ),
     );
@@ -129,6 +130,81 @@ class _PostState extends State<Post> {
         IconButton(
           onPressed: () {
             setState(() {
+              showDialog(
+                context: context,
+                builder: (childContext) {
+                  return AlertDialog(
+                    backgroundColor: ColorConst.base,
+                    title: Text(
+                      "写真のアップロード方法を\n選択してください",
+                      textAlign: TextAlign.center,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10), // 必要に応じてパディングを調整
+
+                    content: Column(
+                      children: <Widget>[
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.pop(childContext);
+                            getImageFromCamera(); // 画像を取得する関数を呼び出す
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: ColorConst.main, width: 5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.photo_camera,
+                                color: ColorConst.icon,
+                                size: 28.0,
+                              ),
+                              SizedBox(
+                                width: 35,
+                                height: 40,
+                              ),
+                              Text("カメラ"),
+                            ],
+                          ),
+                        ),
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.pop(childContext);
+                            getImageFromGarally(); // 画像を取得する関数を呼び出す
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: ColorConst.main, width: 5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.add_photo_alternate,
+                                color: ColorConst.icon,
+                                size: 28.0,
+                              ),
+                              SizedBox(
+                                width: 25,
+                                height: 40,
+                              ),
+                              Text("ギャラリー"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
               _visible = !_visible;
             });
           },
@@ -150,5 +226,23 @@ class _PostState extends State<Post> {
         ),
       ],
     );
+  }
+
+  Future getImageFromGarally() async {
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = XFile(pickedFile.path);
+      }
+    });
+  }
+
+  Future getImageFromCamera() async {
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      if (pickedFile != null) {
+        _image = XFile(pickedFile.path);
+      }
+    });
   }
 }
