@@ -40,7 +40,7 @@ class _NavigationState extends State<Navigation> {
         tabs: [
           MoltenTab(
               icon: Icon(
-                Icons.search,
+                Icons.add_comment_outlined,
                 size: 40,
               ),
               selectedColor: ColorConst.icon,
