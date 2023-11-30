@@ -14,13 +14,13 @@ class _MomentState extends State<Moment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
-        child: AppbarComponent(),
-      ),
+      // appBar: PreferredSize(
+      //   preferredSize:
+      //       Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
+      //   child: AppbarComponent(),
+      // ),
       backgroundColor: ColorConst.base,
-      body: Center(child: SvgPicture.asset('images/Moment.svg')),
+      body: Center(child: SvgPicture.asset('images/page/Moment.svg')),
     );
   }
 }

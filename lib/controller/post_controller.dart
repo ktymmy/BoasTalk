@@ -77,30 +77,6 @@ class PostController {
         imgPath: 'assets/images/noimage.svg',
         contents: 'はぴはぴ～～',
         date: DateTime.now()),
-    PostModel(
-        id: 13,
-        userId: 5,
-        imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～',
-        date: DateTime.now()),
-    PostModel(
-        id: 14,
-        userId: 5,
-        imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～',
-        date: DateTime.now()),
-    PostModel(
-        id: 15,
-        userId: 5,
-        imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～',
-        date: DateTime.now()),
-    PostModel(
-        id: 16,
-        userId: 5,
-        imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～',
-        date: DateTime.now()),
   ];
 
   List<PostModel> get post => _posts;

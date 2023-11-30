@@ -14,14 +14,14 @@ class _RandomState extends State<Random> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
-        child: AppbarComponent(),
-      ),
+      // appBar: PreferredSize(
+      //   preferredSize:
+      //       Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
+      //   child: AppbarComponent(),
+      // ),
       backgroundColor: ColorConst.base,
       body: Center(
-        child: SvgPicture.asset('images/Random.svg'), //
+        child: SvgPicture.asset('images/page/Random.svg'), //
       ),
     );
   }
