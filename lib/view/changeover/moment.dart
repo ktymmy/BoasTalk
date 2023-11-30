@@ -14,7 +14,7 @@ class _MomentState extends State<Moment> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConst.base,
-      body: Center(child: SvgPicture.asset('images/page/Moment.svg')),
+      body: Center(child: SvgPicture.asset('page/Moment.svg')),
     );
   }
 }

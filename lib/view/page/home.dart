@@ -23,14 +23,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String currentIcon = 'images/page/MomentIcon.svg'; //現在のアイコン定義
+  String currentIcon = 'page/MomentIcon.svg'; //現在のアイコン定義
 
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
-      currentIcon == 'images/page/MomentIcon.svg'
-          ? currentIcon = 'images/page/RandomIcon.svg'
-          : currentIcon = 'images/page/MomentIcon.svg';
+      currentIcon == 'page/MomentIcon.svg'
+          ? currentIcon = 'page/RandomIcon.svg'
+          : currentIcon = 'page/MomentIcon.svg';
     });
   }
 
@@ -49,10 +49,10 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
         onPressed: () async {
-          if (currentIcon == 'images/page/MomentIcon.svg') {
+          if (currentIcon == 'page/MomentIcon.svg') {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Moment()));
-          } else if (currentIcon == 'images/page/RandomIcon.svg') {
+          } else if (currentIcon == 'page/RandomIcon.svg') {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
