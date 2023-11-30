@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/flutter_svg.dart'; //svg
 
 //constant
 import '../../constant/color_Const.dart';
@@ -11,10 +11,9 @@ import '../component/appbar.dart';
 import 'package:boastalk/model/post_model.dart';
 //controller
 import 'package:boastalk/controller/post_controller.dart';
-
-//page
-import '../page/moment.dart';
-import '../page/random.dart';
+//changeover
+import '../changeover/moment.dart';
+import '../changeover/random.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -58,7 +57,7 @@ class _HomeState extends State<Home> {
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
 
-          toggleIcon(); //アイコン切替メソッド予備だし
+          toggleIcon(); //アイコン切替メソッド呼び出し
 
           // 2秒待機後にhome.dartに戻る
           await Future.delayed(Duration(seconds: 1));
