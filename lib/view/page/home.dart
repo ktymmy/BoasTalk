@@ -37,9 +37,11 @@ class _HomeState extends State<Home> {
 
   List<PostModel> _posts = [];
 
+  //データをリスト形式でとってきて、ランダムに並び替え
   void initState() {
     super.initState();
     _posts = PostController().post;
+    _posts.shuffle();
   }
 
   @override
@@ -58,10 +60,17 @@ class _HomeState extends State<Home> {
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
 
-          toggleIcon(); //アイコン切替メソッド予備だし
-
-          // 2秒待機後にhome.dartに戻る
+          // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る
           await Future.delayed(Duration(seconds: 1));
+          
+          if (currentIcon == 'images/page/MomentIcon.svg') {
+            _posts.sort((a, b) => b.date.compareTo(a.date));
+          } else if (currentIcon == 'images/page/RandomIcon.svg') {
+            _posts.shuffle();
+          }
+
+          toggleIcon();
+
           Navigator.pop(context);
         },
         child: (SvgPicture.asset(currentIcon)),
