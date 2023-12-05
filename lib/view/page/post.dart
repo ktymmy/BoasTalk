@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
-import '../navibar.dart';
 import '../component/appbar.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,70 +12,53 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
+  // 画像の表示と非表示を切り替える変数
   bool _visible = false;
   XFile? _image;
   final imagePicker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final double fontSize = 48;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConst.base,
-        appBar: const AppbarComponent(),
-        body: SingleChildScrollView(
-            child: Container(
-          child: Column(children: [
-            Visibility(
-              visible: _visible,
-              child: _Image(),
-            ),
-            _Text(),
-            Row(
-              children: [_photoIcon(), _sendIcon()],
-              // TODO:アイコンの位置
-            ),
-          ]),
-        )),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: ColorConst.base,
+          appBar: const AppbarComponent(),
+          body: SingleChildScrollView(
+            child: _Text(),
+          ),
+        ),
       ),
     );
   }
 
+  // 画像
   Widget _Image() {
-    final double fontSize = 16;
-    return Card(
-      color: ColorConst.white, // Card自体の色
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20), // 角丸
-        side: BorderSide(
-          color: ColorConst.accent, // 色
-          width: 5, //太さ
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(20, 20, 10, 5), // 余白
-      child: Padding(
-        padding: EdgeInsets.all(10.0), // 余白
-        child: SizedBox(
-          height: 250,
-          width: 325,
-          child: _image == null
-              ? Text(
-                  '写真を選択してください',
-                  style: Theme.of(context).textTheme.headline4,
-                )
-              : ImageContainer(
-                  height: 250,
-                  cornerRadius: 15,
-                  image: Image.file(File(_image!.path)).image,
-                ),
-        ),
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: EdgeInsets.all(10.0), // 余白
+      child: SizedBox(
+        height: height * 0.3,
+        width: width * 0.7,
+        child: _image == null
+            ? SizedBox()
+            : ImageContainer(
+                height: height * 0.2,
+                cornerRadius: 15,
+                image: Image.file(File(_image!.path)).image,
+              ),
       ),
     );
   }
 
+  // 文章
   Widget _Text() {
-    final double fontSize = 16;
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Card(
       color: ColorConst.white, // Card自体の色
       shape: RoundedRectangleBorder(
@@ -86,19 +68,35 @@ class _PostState extends State<Post> {
           width: 5, //太さ
         ),
       ),
-      margin: EdgeInsets.fromLTRB(20, 5, 10, 5), // 余白
-      child: const Padding(
-        padding: EdgeInsets.all(10.0), // 余白
-        child: SizedBox(
-          height: 250,
-          width: 325,
-          child: TextField(
-            keyboardType: TextInputType.multiline, // 複数行入力できるようにする
-            maxLines: null,
-            decoration:
-                InputDecoration(border: InputBorder.none, hintText: 'テキストを入力'),
+      margin: EdgeInsets.fromLTRB(10, 5, 10, 5), // 余白
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(10.0), // 余白
+            child: SizedBox(
+              height: height * 0.3,
+              width: width * 0.8,
+              child: TextField(
+                keyboardType: TextInputType.multiline, // 複数行入力できるようにする
+                maxLines: null,
+                maxLength: 200,
+                decoration: InputDecoration(
+                    border: InputBorder.none, hintText: 'テキストを入力'),
+              ),
+            ),
           ),
-        ),
+          Visibility(
+            visible: _visible,
+            child: _Image(),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [_photoIcon(), _sendIcon()],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -124,7 +122,7 @@ class _PostState extends State<Post> {
   Widget _sendIcon() {
     return IconButton(
       onPressed: () {
-        // TODO送信時の動き
+        // TODO送信時の処理
       },
       icon: Icon(
         Icons.send,
@@ -136,15 +134,19 @@ class _PostState extends State<Post> {
 
 //ダイアログ
   _dialog() {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final double fontSize = 13;
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              insetPadding: EdgeInsets.fromLTRB(5, 275, 5, 275),
-
+              insetPadding: EdgeInsets.fromLTRB(
+                  width * 0.05, height * 0.37, width * 0.05, height * 0.37),
               backgroundColor: ColorConst.base,
               title: Text(
                 "写真のアップロード方法を\n選択してください",
                 textAlign: TextAlign.center,
+                style: TextStyle(fontSize: fontSize),
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -157,7 +159,7 @@ class _PostState extends State<Post> {
                 children: <Widget>[
                   OutlinedButton(
                     onPressed: () {
-                      // Navigator.pop(childContext);
+                      Navigator.pop(context);
                       getImageFromCamera(); // 画像を取得する関数を呼び出す
                     },
                     style: OutlinedButton.styleFrom(
@@ -174,16 +176,20 @@ class _PostState extends State<Post> {
                           size: 28.0,
                         ),
                         SizedBox(
-                          width: 35,
+                          width: 50,
                           height: 40,
                         ),
-                        Text("カメラ"),
+                        Text(
+                          "カメラ",
+                          style: TextStyle(
+                              color: Colors.black, fontSize: fontSize),
+                        ),
                       ],
                     ),
                   ),
                   OutlinedButton(
                     onPressed: () {
-                      // Navigator.pop(childContext);
+                      Navigator.pop(context);
                       getImageFromGarally(); // 画像を取得する関数を呼び出す
                     },
                     style: OutlinedButton.styleFrom(
@@ -200,10 +206,14 @@ class _PostState extends State<Post> {
                           size: 28.0,
                         ),
                         SizedBox(
-                          width: 25,
+                          width: 40,
                           height: 40,
                         ),
-                        Text("ギャラリー"),
+                        Text(
+                          "ギャラリー",
+                          style: TextStyle(
+                              color: Colors.black, fontSize: fontSize),
+                        ),
                       ],
                     ),
                   ),
@@ -212,6 +222,7 @@ class _PostState extends State<Post> {
             ));
   }
 
+  // ギャラリーから画像を取得する関数
   Future getImageFromGarally() async {
     final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
@@ -222,6 +233,7 @@ class _PostState extends State<Post> {
     });
   }
 
+  // カメラから画像を取得する関数
   Future getImageFromCamera() async {
     final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
     setState(() {
@@ -232,6 +244,7 @@ class _PostState extends State<Post> {
     });
   }
 
+  // 画像の表示方法の関数
   static Widget ImageContainer(
       {double? height,
       double? width,
@@ -242,8 +255,16 @@ class _PostState extends State<Post> {
         width: width,
         height: height,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
-            image: DecorationImage(fit: BoxFit.cover, image: image)),
+          borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
+          image: DecorationImage(fit: BoxFit.cover, image: image),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 5),
+              color: Colors.grey,
+              blurRadius: 5,
+            ),
+          ],
+        ),
         child: child);
   }
 }
