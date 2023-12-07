@@ -4,6 +4,8 @@ import 'package:boastalk/constant/color_Const.dart';
 import '../component/appbar.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'detail_page.dart';
+
 class Post extends StatefulWidget {
   const Post({super.key});
 
@@ -14,8 +16,10 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> {
   // 画像の表示と非表示を切り替える変数
   bool _visible = false;
+
   XFile? _image;
   final imagePicker = ImagePicker();
+  String heroTag = "";
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,10 @@ class _PostState extends State<Post> {
           backgroundColor: ColorConst.base,
           appBar: const AppbarComponent(),
           body: SingleChildScrollView(
-            child: _Text(),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: _Text(),
+            ),
           ),
         ),
       ),
@@ -39,18 +46,22 @@ class _PostState extends State<Post> {
   Widget _Image() {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: EdgeInsets.all(10.0), // 余白
-      child: SizedBox(
-        height: height * 0.3,
-        width: width * 0.7,
-        child: _image == null
-            ? SizedBox()
-            : ImageContainer(
-                height: height * 0.2,
-                cornerRadius: 15,
-                image: Image.file(File(_image!.path)).image,
-              ),
+
+    return Hero(
+      tag: heroTag,
+      child: Padding(
+        padding: EdgeInsets.all(10.0), // 余白
+        child: SizedBox(
+          height: height * 0.3,
+          width: width * 0.7,
+          child: _image == null
+              ? SizedBox()
+              : ImageContainer(
+                  height: height * 0.2,
+                  cornerRadius: 15,
+                  image: Image.file(File(_image!.path)).image,
+                ),
+        ),
       ),
     );
   }
@@ -74,7 +85,7 @@ class _PostState extends State<Post> {
           Padding(
             padding: EdgeInsets.all(10.0), // 余白
             child: SizedBox(
-              height: height * 0.3,
+              height: height * 0.2,
               width: width * 0.8,
               child: TextField(
                 keyboardType: TextInputType.multiline, // 複数行入力できるようにする
@@ -86,9 +97,19 @@ class _PostState extends State<Post> {
             ),
           ),
           Visibility(
-            visible: _visible,
-            child: _Image(),
-          ),
+              visible: _visible,
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 500),
+                        pageBuilder: (_, __, ___) =>
+                            DetailPage(imagePath: _image!.path, heroTag),
+                      ),
+                    );
+                  },
+                  child: _Image())),
           Padding(
             padding: EdgeInsets.all(10),
             child: Row(
@@ -141,7 +162,7 @@ class _PostState extends State<Post> {
         context: context,
         builder: (context) => AlertDialog(
               insetPadding: EdgeInsets.fromLTRB(
-                  width * 0.05, height * 0.37, width * 0.05, height * 0.37),
+                  width * 0.05, height * 0.35, width * 0.05, height * 0.35),
               backgroundColor: ColorConst.base,
               title: Text(
                 "写真のアップロード方法を\n選択してください",
