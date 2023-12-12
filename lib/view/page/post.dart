@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
 import '../component/appbar.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'detail_page.dart';
 
 class Post extends StatefulWidget {
@@ -29,12 +28,15 @@ class _PostState extends State<Post> {
       },
       child: SafeArea(
         child: Scaffold(
+          // resizeToAvoidBottomInset: false,
           backgroundColor: ColorConst.base,
           appBar: const AppbarComponent(),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: _Text(),
+          body: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: _Text(),
+              ),
             ),
           ),
         ),
