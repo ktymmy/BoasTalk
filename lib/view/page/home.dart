@@ -25,7 +25,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String currentIcon = 'images/page/MomentIcon.svg'; //現在のアイコン定義
-  final ExpansionTileController controller = ExpansionTileController();
 
   List<PostModel> _posts = [];
 
@@ -75,10 +74,6 @@ class _HomeState extends State<Home> {
             _posts.sort((a, b) => b.date.compareTo(a.date));
           } else if (currentIcon == 'images/page/RandomIcon.svg') {
             _posts.shuffle();
-          }
-
-          if(controller.isExpanded){
-            controller.collapse();
           }
         
           toggleIcon();
