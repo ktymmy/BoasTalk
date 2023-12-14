@@ -6,25 +6,27 @@ class PostController {
     PostModel(
         id: 1,
         userId: 1,
-        imgPath: 'assets/images/noimage.svg',
+        imgPath: 'assets/testimg/neko2.jpg',
         contents: '今日はみんなでチーム開発をした！！楽しかった！！！！またしたい！！！',
         date: DateTime(1999, 12, 31, 23, 59)),
     PostModel(
         id: 2,
         userId: 1,
-        imgPath: 'assets/images/noimage.svg',
+        imgPath: 'assets/testimg/inu.jpg',
         contents: '毎日幸せえ～～～～～～',
         date: DateTime(2023, 5, 5, 5, 5)),
     PostModel(
         id: 3,
         userId: 2,
-        imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～11月30日',
-        date: DateTime(2023, 11, 30, 10, 16)),
+
+        imgPath: 'assets/testimg/neko1.png',
+        contents: 'はぴはぴ～～11月30日 .png',
+        date: DateTime(2023,11,30,10,16)),
+
     PostModel(
         id: 4,
         userId: 2,
-        imgPath: 'assets/images/noimage.svg',
+        imgPath: 'assets/testimg/ressapanda.jpg',
         contents: """私は最近プロジェクトXで,
 リーダーシップを取り、
 チーム全員の協力を得て成功を収めました。そしてチーム全員でこのポーズをとって
@@ -39,38 +41,39 @@ class PostController {
     PostModel(
         id: 6,
         userId: 4,
-        imgPath: 'assets/images/noimage.svg',
-        contents:
-            '幼い頃から親の転勤によって様々な地域で生活した経験があるので、文化や言葉や習慣の違いにすぐに順応する事が自然と身に付きました。そのため、自分の常識や普通にとらわれずに、人や物事を多角的、客観的に見るという事が私の強みです。何事もまず受け入れて新しいものを吸収したいと思っていますので、自分の中の物差しで人や物事を量ることをしませんが、自分の与えられた仕事や環境には責任と決断力を持って臨みます。',
-        date: DateTime(2023, 12, 1, 12, 0)),
+
+        imgPath: 'assets/testimg/lion.jpg',
+        contents: 'はぴはぴ～～12月1日 .jpg',
+        date: DateTime(2023,12,1,12,0)),
     PostModel(
         id: 7,
         userId: 5,
-        imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～12月2日',
-        date: DateTime(2023, 12, 2, 12, 0)),
+        imgPath: 'assets/testimg/risu.avif',
+        contents: 'はぴはぴ～～12月2日 .avif',
+        date: DateTime(2023,12,2,12,0)),
     PostModel(
         id: 8,
         userId: 4,
-        imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～12月3日',
-        date: DateTime(2023, 12, 3, 12, 0)),
+        imgPath: 'assets/testimg/tatenaga.jpg',
+        contents: 'はぴはぴ～～12月3日 tatenaga',
+        date: DateTime(2023,12,3,12,0)),
     PostModel(
         id: 9,
         userId: 5,
-        imgPath: 'assets/images/noimage.svg',
-        contents: 'はぴはぴ～～12月4日',
-        date: DateTime(2023, 12, 4, 12, 0)),
+        imgPath: 'assets/testimg/yokonaga.jpg',
+        contents: 'はぴはぴ～～12月4日 yokonaga',
+        date: DateTime(2023,12,4,12,0)),
+
     PostModel(
         id: 10,
         userId: 4,
-        imgPath: 'assets/images/noimage.svg',
+        imgPath: 'assets/testimg/kitune.jpg',
         contents: 'はぴはぴ～～12月5日',
         date: DateTime(2023, 12, 5, 12, 0)),
     PostModel(
         id: 11,
         userId: 5,
-        imgPath: 'assets/images/noimage.svg',
+        imgPath: 'assets/testimg/gorira.jpg',
         contents: 'はぴはぴ～～12月6日',
         date: DateTime(2023, 12, 6, 12, 0)),
   ];
