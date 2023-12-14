@@ -14,13 +14,15 @@ import '../../model/post_model.dart';
 class CardComponent extends StatefulWidget {
   final PostModel _post;
   final Function() _onTap;
+  final int _index;
 
   const CardComponent({
     Key? key,
     required PostModel post,
     required Function() onTap,
+    required int index,
   })  : _post = post,
-
+        _index = index,
         // const CardComponent(
         //     {super.key, required PostModel post, required Function() onTap})
         //     : _post = post,
@@ -109,7 +111,7 @@ class _CardComponentState extends State<CardComponent> {
 
   //枠線の色判定
   Color border() {
-    return widget._post.id % 2 == 0
+    return widget._index % 2 == 0
         ? ColorConst.cardFrame1
         : ColorConst.cardFrame2;
   }

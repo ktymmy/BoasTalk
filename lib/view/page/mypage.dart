@@ -1,4 +1,3 @@
-
 import 'package:boastalk/view/page/home.dart';
 
 import 'package:flutter/material.dart';
@@ -207,6 +206,7 @@ class _MypageState extends State<Mypage> {
                 CardComponent(
                   post: _posts[index],
                   onTap: () {},
+                  index: index,
                 ),
                 SizedBox(
                   height: 10,

@@ -31,7 +31,6 @@ class _HomeState extends State<Home> {
   // 各ExpansionTileの状態を管理するリスト
   List<bool> _isExpandedList = [];
 
-
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
@@ -75,7 +74,7 @@ class _HomeState extends State<Home> {
           } else if (currentIcon == 'page/RandomIcon.svg') {
             _posts.shuffle();
           }
-        
+
           toggleIcon();
 
           Navigator.pop(context);
@@ -105,9 +104,9 @@ class _HomeState extends State<Home> {
               children: [
                 const SizedBox(height: 5),
                 CardComponent(
-
                   post: _posts[index],
                   onTap: () {},
+                  index: index,
                 ),
               ],
             );
