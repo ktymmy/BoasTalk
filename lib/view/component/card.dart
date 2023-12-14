@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; //svg
 
@@ -13,9 +12,6 @@ import '../../model/post_model.dart';
 class CardComponent extends StatelessWidget {
   final PostModel _post;
   final Function() _onTap;
-
-  
-
 
   const CardComponent(
       {super.key, required PostModel post, required Function() onTap})
@@ -31,8 +27,6 @@ class CardComponent extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;  //*0.3が画像の大きさ
     final width = MediaQuery.of(context).size.width;    //*0.7
 
-    final ExpansionTileController controller = ExpansionTileController();
-
     Widget imgShow; //画像を表示させるための変数
 
     if(post.imgPath.contains('svg')) { //画像の拡張子が'svg'の場合
@@ -47,7 +41,6 @@ class CardComponent extends StatelessWidget {
         minHeight: height * 0.15,
       ),
       child: ExpansionTile(
-        controller: controller,
         collapsedShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
@@ -82,14 +75,12 @@ class CardComponent extends StatelessWidget {
             width: width * 0.7,
             child: imgShow, //画像を表示
           ),
-          // SizedBox(  //押されたページだけ閉じます 全部閉じるのはわかりませんでしたすみません
-          //   child: FloatingActionButton(onPressed: (){
-          //     controller.collapse();
-          //   },)
-          // )
+          SizedBox( 
+            child: FloatingActionButton(onPressed: (){
+            },)
+          )
         ],
       ),
-      
     );
   }
 
@@ -98,13 +89,3 @@ class CardComponent extends StatelessWidget {
     return _post.id % 2 == 0 ? ColorConst.cardFrame1 : ColorConst.cardFrame2;
   }
 }
-
-// class _CardState extends State<Card> {
-
-//     Widget build(BuildContext context) {
-//       return Container(
-
-//       );
-//     }
-
-// }

@@ -28,10 +28,6 @@ class _HomeState extends State<Home> {
 
   List<PostModel> _posts = [];
 
-  // 各ExpansionTileの状態を管理するリスト
-  List<bool> _isExpandedList = [];
-
-
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
@@ -46,9 +42,6 @@ class _HomeState extends State<Home> {
     super.initState();
     _posts = PostController().post;
     _posts.shuffle();
-
-    // 各ExpansionTileの状態を初期化
-    _isExpandedList = List.generate(_posts.length, (index) => false);
   }
 
   @override
@@ -67,7 +60,7 @@ class _HomeState extends State<Home> {
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
 
-          // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る
+          // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る、画面再描画（Cardを閉じる）
           await Future.delayed(Duration(seconds: 1));
           
           if (currentIcon == 'images/page/MomentIcon.svg') {
@@ -79,6 +72,12 @@ class _HomeState extends State<Home> {
           toggleIcon();
 
           Navigator.pop(context);
+
+          Navigator.pushReplacement(
+            context, 
+            MaterialPageRoute(
+              builder: (BuildContext context) => super.widget)
+          );
         },
         child: (SvgPicture.asset(currentIcon)),
       ),
@@ -105,7 +104,6 @@ class _HomeState extends State<Home> {
               children: [
                 const SizedBox(height: 5),
                 CardComponent(
-
                   post: _posts[index],
                   onTap: () {},
                 ),
