@@ -75,10 +75,6 @@ class CardComponent extends StatelessWidget {
             width: width * 0.7,
             child: imgShow, //画像を表示
           ),
-          SizedBox( 
-            child: FloatingActionButton(onPressed: (){
-            },)
-          )
         ],
       ),
     );
