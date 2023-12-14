@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_svg/flutter_svg.dart'; //svg
+import 'package:flutter_svg/flutter_svg.dart';
 
 //constant
 import '../../constant/color_Const.dart';
@@ -11,7 +11,8 @@ import '../component/appbar.dart';
 import 'package:boastalk/model/post_model.dart';
 //controller
 import 'package:boastalk/controller/post_controller.dart';
-//changeover
+
+//page
 import '../changeover/moment.dart';
 import '../changeover/random.dart';
 
@@ -59,14 +60,12 @@ class _HomeState extends State<Home> {
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
 
-
           // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る
-
           await Future.delayed(Duration(seconds: 1));
-          
-          if (currentIcon == 'images/page/MomentIcon.svg') {
+
+          if (currentIcon == 'page/MomentIcon.svg') {
             _posts.sort((a, b) => b.date.compareTo(a.date));
-          } else if (currentIcon == 'images/page/RandomIcon.svg') {
+          } else if (currentIcon == 'page/RandomIcon.svg') {
             _posts.shuffle();
           }
 
