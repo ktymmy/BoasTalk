@@ -15,19 +15,15 @@ class CardComponent extends StatefulWidget {
   final PostModel _post;
   final Function() _onTap;
 
+  const CardComponent({
+    Key? key,
+    required PostModel post,
+    required Function() onTap,
+  })  : _post = post,
 
-//   const CardComponent({
-//     Key? key,
-//     required PostModel post,
-//     required Function() onTap,
-//   })  : _post = post,
-
-  
-
-
-  const CardComponent(
-      {super.key, required PostModel post, required Function() onTap})
-      : _post = post,
+        // const CardComponent(
+        //     {super.key, required PostModel post, required Function() onTap})
+        //     : _post = post,
         _onTap = onTap;
 
   @override
@@ -43,16 +39,18 @@ class _CardComponentState extends State<CardComponent> {
   }
 
   Widget _Card(PostModel post, BuildContext context) {
-    final height = MediaQuery.of(context).size.height;  //*0.3が画像の大きさ
-    final width = MediaQuery.of(context).size.width;    //*0.7
+    final height = MediaQuery.of(context).size.height; //*0.3が画像の大きさ
+    final width = MediaQuery.of(context).size.width; //*0.7
 
     final ExpansionTileController controller = ExpansionTileController();
 
     Widget imgShow; //画像を表示させるための変数
 
-    if(post.imgPath.contains('svg')) { //画像の拡張子が'svg'の場合
+    if (post.imgPath.contains('svg')) {
+      //画像の拡張子が'svg'の場合
       imgShow = SvgPicture.asset(post.imgPath);
-    }else{ //それ以外の拡張子
+    } else {
+      //それ以外の拡張子
       imgShow = Image.asset(post.imgPath);
     }
 
@@ -78,14 +76,10 @@ class _CardComponentState extends State<CardComponent> {
           ),
         ),
         onExpansionChanged: (bool expanded) {
-
-//           setState(() {
-//             _isExpanded = expanded;
-//           });
-
-
-
-       },
+          setState(() {
+            _isExpanded = expanded;
+          });
+        },
         backgroundColor: ColorConst.cardBackground,
         collapsedBackgroundColor: ColorConst.cardBackground,
         initiallyExpanded: false,
@@ -95,7 +89,7 @@ class _CardComponentState extends State<CardComponent> {
           maxLines: _isExpanded ? 20 : 3,
           style: const TextStyle(fontWeight: FontWeight.normal),
         ),
-        childrenPadding: EdgeInsets.symmetric(vertical: 10),  //上下方向に10pxパディング
+        childrenPadding: EdgeInsets.symmetric(vertical: 10), //上下方向に10pxパディング
         // childrenPadding: EdgeInsets.all(10),  //全方向に10pxパディング
         children: <Widget>[
           SizedBox(
@@ -110,7 +104,6 @@ class _CardComponentState extends State<CardComponent> {
           // )
         ],
       ),
-      
     );
   }
 
