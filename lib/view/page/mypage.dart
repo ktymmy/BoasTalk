@@ -1,4 +1,3 @@
-
 import 'package:boastalk/view/page/home.dart';
 
 import 'package:flutter/material.dart';
@@ -139,13 +138,15 @@ class _MypageState extends State<Mypage> {
   //         backgroundColor: ColorConst.white,
   //         title: Text('過去の投稿'),
   //         content: SizedBox(
-  //           height: 200,
-  //           width: width * 0.8,
+  //           height: height * 0.5,
+  //           width: width * 0.9,
   //           child: TableCalendar(
   //             focusedDay: _focusedDay,
   //             firstDay: DateTime.now(),
   //             lastDay: DateTime.utc(2050, 12, 31),
   //             shouldFillViewport: true,
+  //             locale: 'ja_JP',
+  //             // locale: 'ja_JP', //カレンダーを日本語に変換
   //           ),
   //         ),
   //       ),

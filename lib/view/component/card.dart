@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; //svg
+import 'package:http/http.dart';
 
 //animation
 import '../animation/animation_flower.dart';
@@ -11,31 +12,38 @@ import '../../constant/color_Const.dart';
 //model
 import '../../model/post_model.dart';
 
+import '../../controller/post_controller.dart';
+
 class CardComponent extends StatefulWidget {
   final PostModel _post;
-  final Function() _onTap;
 
   const CardComponent({
     Key? key,
     required PostModel post,
     required Function() onTap,
-  })  : _post = post,
-
-        // const CardComponent(
-        //     {super.key, required PostModel post, required Function() onTap})
-        //     : _post = post,
-        _onTap = onTap;
+  }) : _post = post;
 
   @override
   _CardComponentState createState() => _CardComponentState();
 }
 
 class _CardComponentState extends State<CardComponent> {
-  bool _isExpanded = false; //
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
-    return _Card(widget._post, context);
+    return FutureBuilder<PostModel>(
+      // future: fetchPhotos(), //TODO:確認
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // データを待っている間はローディングインジケータを表示
+        } else if (snapshot.hasError) {
+          return Text('エラー: ${snapshot.error}');
+        } else {
+          return _Card(snapshot.data!, context);
+        }
+      },
+    );
   }
 
   Widget _Card(PostModel post, BuildContext context) {
@@ -46,12 +54,12 @@ class _CardComponentState extends State<CardComponent> {
 
     Widget imgShow; //画像を表示させるための変数
 
-    if (post.imgPath.contains('svg')) {
+    if (post.IMAGE.contains('svg')) {
       //画像の拡張子が'svg'の場合
-      imgShow = SvgPicture.asset(post.imgPath);
+      imgShow = SvgPicture.asset(post.IMAGE);
     } else {
       //それ以外の拡張子
-      imgShow = Image.asset(post.imgPath);
+      imgShow = Image.asset(post.IMAGE);
     }
 
     return Container(
@@ -84,7 +92,7 @@ class _CardComponentState extends State<CardComponent> {
         collapsedBackgroundColor: ColorConst.cardBackground,
         initiallyExpanded: false,
         title: Text(
-          post.contents,
+          post.CONTENTS,
           overflow: TextOverflow.ellipsis,
           maxLines: _isExpanded ? 20 : 3,
           style: const TextStyle(fontWeight: FontWeight.normal),
@@ -109,7 +117,7 @@ class _CardComponentState extends State<CardComponent> {
 
   //枠線の色判定
   Color border() {
-    return widget._post.id % 2 == 0
+    return widget._post.ID % 2 == 0
         ? ColorConst.cardFrame1
         : ColorConst.cardFrame2;
   }
