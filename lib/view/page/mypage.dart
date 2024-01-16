@@ -15,7 +15,7 @@ import '../../model/users_model.dart';
 import '../../controller/post_controller.dart';
 import '../../controller/mypage_controller.dart';
 //page
-// import '../page/calendar.dart';
+import '../page/calendar.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -37,7 +37,7 @@ class _MypageState extends State<Mypage> {
   }
 
   void listState() {
-    _posts = PostController().post;
+    // _posts = PostController().post;
     _users = MypageController().user;
   }
 
@@ -98,7 +98,11 @@ class _MypageState extends State<Mypage> {
                         Container(
                           child: IconButton(
                             onPressed: () {
-                              // _clendar();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CalendarWidge()),
+                              );
                             },
                             icon: const Icon(
                               Icons.calendar_month_outlined,
@@ -125,34 +129,45 @@ class _MypageState extends State<Mypage> {
     );
   }
 
-//calendar
-  // _clendar() {
-  //   final height = MediaQuery.of(context).size.height;
-  //   final width = MediaQuery.of(context).size.width;
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => SizedBox(
-  //       height: height * 0.6,
-  //       width: width * 0.9,
-  //       child: AlertDialog(
-  //         backgroundColor: ColorConst.white,
-  //         title: Text('過去の投稿'),
-  //         content: SizedBox(
-  //           height: height * 0.5,
-  //           width: width * 0.9,
-  //           child: TableCalendar(
-  //             focusedDay: _focusedDay,
-  //             firstDay: DateTime.now(),
-  //             lastDay: DateTime.utc(2050, 12, 31),
-  //             shouldFillViewport: true,
-  //             locale: 'ja_JP',
-  //             // locale: 'ja_JP', //カレンダーを日本語に変換
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+// calendar
+  _clendar() {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    showDialog(
+      context: context,
+      builder: (context) => SizedBox(
+        // height: height * 0.6,
+        // width: width * 0.9,
+        child: AlertDialog(
+          backgroundColor: ColorConst.cdBackground,
+          title: Text(
+            '過去の投稿',
+          ),
+          content: SizedBox(
+            height: height * 0.5,
+            width: width * 0.9,
+            child: TableCalendar(
+              focusedDay: _focusedDay,
+              firstDay: DateTime.utc(2024, 01, 01),
+              lastDay: DateTime.utc(2050, 12, 31),
+              shouldFillViewport: true,
+              locale: 'ja_JP',
+              calendarStyle: const CalendarStyle(
+                todayDecoration: BoxDecoration(
+                  color: ColorConst.cdToday,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              headerStyle: const HeaderStyle(
+                formatButtonVisible: false, //[2week]の表示を消す
+                titleCentered: true, //年月をheaderの中央に配置
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
 //プロフィール
   _UserProfileWidget() {
@@ -207,7 +222,6 @@ class _MypageState extends State<Mypage> {
               children: [
                 CardComponent(
                   post: _posts[index],
-                  onTap: () {},
                 ),
                 SizedBox(
                   height: 10,

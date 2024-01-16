@@ -1,15 +1,11 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-
-final uri = Uri.parse("https://click.ecc.ac.jp/ecc/sys2_23_bloom/posts.php");
-
 class PostModel {
-  final int ID; //ID
-  final int USER_ID; //投稿したuserのID
-  final String IMAGE; //写真のパス
-  final String CONTENTS; //説明文
-  final DateTime POST_DATE; //日付
+  final int ID;
+  final int USER_ID;
+  final String IMAGE;
+  final String CONTENTS;
+  final DateTime POST_DATE;
 
   PostModel({
     required this.ID,
@@ -19,28 +15,27 @@ class PostModel {
     required this.POST_DATE,
   });
 
-  // JSONデータからPostModelインスタンスを作成するファクトリーメソッド
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      ID: json['ID'] as int,
-      USER_ID: json['USER_ID'] as int,
-      IMAGE: json['IMAGE'] as String,
-      CONTENTS: json['CONTENTS'] as String,
-      POST_DATE: DateTime.parse(json['date']),
+      ID: json['ID'],
+      USER_ID: json['USER_ID'],
+      IMAGE: json['IMAGE'],
+      CONTENTS: json['CONTENTS'],
+      POST_DATE: DateTime.parse(json['POST_DATE']), // StringをDateTimeに変換
     );
   }
 
-  // A function that converts a response body into a List<Photo>.
-  List<PostModel> parsePhotos(String responseBody) {
-    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  Map<String, dynamic> toJson() => {
+        "ID": ID,
+        "USER_ID": USER_ID,
+        "IMAGE": IMAGE,
+        "CONTENTS": CONTENTS,
+        "POST_DATE": POST_DATE.toIso8601String(), // DateTimeをStringに変換
+      };
 
-    return parsed.map<PostModel>((json) => PostModel.fromJson(json)).toList();
-  }
+  static PostModel postModelFromJson(String str) =>
+      PostModel.fromJson(json.decode(str));
 
-  Future<List<PostModel>> fetchPhotos(http.Client client) async {
-    final response = await client.get(uri);
-
-    // Use the compute function to run parsePhotos in a separate isolate.
-    return parsePhotos(response.body);
-  }
+  static String postModelToJson(PostModel post) => json.encode(post.toJson());
+  // JSONデータをDartオブジェクトに変換
 }

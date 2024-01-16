@@ -16,6 +16,8 @@ import 'package:boastalk/controller/post_controller.dart';
 import '../changeover/moment.dart';
 import '../changeover/random.dart';
 
+import '../../view_model/post_viewmodel.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -24,9 +26,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String currentIcon = 'page/MomentIcon.svg'; //現在のアイコン定義
+  String currentIcon = 'assets/page/MomentIcon.svg'; //現在のアイコン定義
 
-  List<PostModel> _posts = [];
+  List<PostModel> posts = [];
 
   // 各ExpansionTileの状態を管理するリスト
   List<bool> _isExpandedList = [];
@@ -34,20 +36,25 @@ class _HomeState extends State<Home> {
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
-      currentIcon == 'page/MomentIcon.svg'
-          ? currentIcon = 'page/RandomIcon.svg'
-          : currentIcon = 'page/MomentIcon.svg';
+      // currentIcon == 'page/MomentIcon.svg'
+      //     ? currentIcon = 'page/RandomIcon.svg'
+      //     : currentIcon = 'page/MomentIcon.svg';
+
+      //TODO:実機で実行時 assets/必ず前に付ける
+      currentIcon == 'assets/page/MomentIcon.svg'
+          ? currentIcon = 'assets/page/RandomIcon.svg'
+          : currentIcon = 'assets/page/MomentIcon.svg';
     });
   }
 
   //データをリスト形式でとってきて、ランダムに並び替え
   void initState() {
     super.initState();
-    _posts = PostController().post;
-    _posts.shuffle();
+    // _posts = PostController().post;
+    posts.shuffle();
 
     // 各ExpansionTileの状態を初期化
-    _isExpandedList = List.generate(_posts.length, (index) => false);
+    _isExpandedList = List.generate(posts.length, (index) => false);
   }
 
   @override
@@ -58,10 +65,10 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
         onPressed: () async {
-          if (currentIcon == 'page/MomentIcon.svg') {
+          if (currentIcon == 'assets/page/MomentIcon.svg') {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Moment()));
-          } else if (currentIcon == 'page/RandomIcon.svg') {
+          } else if (currentIcon == 'assets/page/RandomIcon.svg') {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
@@ -69,14 +76,12 @@ class _HomeState extends State<Home> {
           // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る
           await Future.delayed(Duration(seconds: 1));
 
-          if (currentIcon == 'page/MomentIcon.svg') {
-            _posts.sort((a, b) => b.POST_DATE.compareTo(a.POST_DATE));
-          } else if (currentIcon == 'page/RandomIcon.svg') {
-            _posts.shuffle();
+          if (currentIcon == 'assets/page/MomentIcon.svg') {
+            posts.sort((a, b) => b.POST_DATE.compareTo(a.POST_DATE));
+          } else if (currentIcon == 'assets/page/RandomIcon.svg') {
+            posts.shuffle();
           }
-
           toggleIcon();
-
           Navigator.pop(context);
         },
         child: (SvgPicture.asset(currentIcon)),
@@ -97,15 +102,14 @@ class _HomeState extends State<Home> {
       children: [
         ListView.builder(
           shrinkWrap: true,
-          itemCount: _posts.length,
+          itemCount: posts.length,
           itemBuilder: (context, index) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 5),
                 CardComponent(
-                  post: _posts[index],
-                  onTap: () {},
+                  post: posts[index],
                 ),
               ],
             );
