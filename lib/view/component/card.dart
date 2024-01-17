@@ -12,11 +12,13 @@ import '../../model/post_model.dart';
 class CardComponent extends StatelessWidget {
   final PostModel _post;
   final Function() _onTap;
+  final List<ExpansionTileController> _controllers;
 
   const CardComponent(
-      {super.key, required PostModel post, required Function() onTap})
+      {super.key, required PostModel post, required Function() onTap, required List<ExpansionTileController> controllers})
       : _post = post,
-        _onTap = onTap;
+        _onTap = onTap,
+        _controllers = controllers;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class CardComponent extends StatelessWidget {
         minHeight: height * 0.15,
       ),
       child: ExpansionTile(
+        controller: _controllers[post.id -1], //各カードにcontrollerを割り当て
         collapsedShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
@@ -56,7 +59,7 @@ class CardComponent extends StatelessWidget {
           ),
         ),
         onExpansionChanged: (bool expanded) {
-
+          //タイルが展開または縮小されるときに呼び出されます
         },
         backgroundColor: ColorConst.cardBackground,
         collapsedBackgroundColor: ColorConst.cardBackground,
@@ -68,7 +71,6 @@ class CardComponent extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.normal),
         ),
         childrenPadding: EdgeInsets.symmetric(vertical: 10),  //上下方向に10pxパディング
-        // childrenPadding: EdgeInsets.all(10),  //全方向に10pxパディング
         children: <Widget>[
           SizedBox(
             height: height * 0.3,

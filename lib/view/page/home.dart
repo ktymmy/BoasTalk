@@ -28,6 +28,8 @@ class _HomeState extends State<Home> {
 
   List<PostModel> _posts = [];
 
+  final List<ExpansionTileController> _controllers = [];
+
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
@@ -42,6 +44,12 @@ class _HomeState extends State<Home> {
     super.initState();
     _posts = PostController().post;
     _posts.shuffle();
+    
+    //投稿の数だけcontrollerを作成
+    for (int i = 0; i < _posts.length; i++) {
+      _controllers.add(ExpansionTileController());
+    }
+
   }
 
   @override
@@ -59,25 +67,28 @@ class _HomeState extends State<Home> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
-
-          // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る、画面再描画（Cardを閉じる）
+          
+          // 1秒待機
           await Future.delayed(Duration(seconds: 1));
           
+          //データ並び替え
           if (currentIcon == 'images/page/MomentIcon.svg') {
             _posts.sort((a, b) => b.date.compareTo(a.date));
           } else if (currentIcon == 'images/page/RandomIcon.svg') {
             _posts.shuffle();
           }
         
+          //アイコン切替
           toggleIcon();
 
+          //投稿画面に戻る
           Navigator.pop(context);
 
-          Navigator.pushReplacement(
-            context, 
-            MaterialPageRoute(
-              builder: (BuildContext context) => super.widget)
-          );
+          //controllerの数だけカードを閉じる
+          for (var controller in _controllers) {
+            controller.collapse();
+          }
+
         },
         child: (SvgPicture.asset(currentIcon)),
       ),
@@ -96,6 +107,7 @@ class _HomeState extends State<Home> {
     return Column(
       children: [
         ListView.builder(
+          controller: _scroll,
           shrinkWrap: true,
           itemCount: _posts.length,
           itemBuilder: (context, index) {
@@ -106,6 +118,7 @@ class _HomeState extends State<Home> {
                 CardComponent(
                   post: _posts[index],
                   onTap: () {},
+                  controllers: _controllers,
                 ),
               ],
             );

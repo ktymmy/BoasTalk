@@ -25,10 +25,19 @@ class _MypageState extends State<Mypage> {
   List<PostModel> _posts = [];
   List<UsersModel> _users = [];
 
+  final List<ExpansionTileController> _controllers = [];
+
+
   @override
   void initState() {
     super.initState();
     listState();
+
+    //投稿の数だけcontrollerを作成
+    for (int i = 0; i < _posts.length; i++) {
+      _controllers.add(ExpansionTileController());
+    }
+
   }
 
   void listState() {
@@ -172,6 +181,7 @@ class _MypageState extends State<Mypage> {
                 CardComponent(
                   post: _posts[index],
                   onTap: () {},
+                  controllers: _controllers,
                 ),
               ],
             );
