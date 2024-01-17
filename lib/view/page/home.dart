@@ -107,7 +107,6 @@ class _HomeState extends State<Home> {
     return Column(
       children: [
         ListView.builder(
-          controller: _scroll,
           shrinkWrap: true,
           itemCount: _posts.length,
           itemBuilder: (context, index) {
