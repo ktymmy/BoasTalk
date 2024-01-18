@@ -103,6 +103,7 @@ class _TestHomeState extends State<TestHome> {
                 const SizedBox(height: 5),
                 CardComponent(
                   post: _posts[index],
+                  controllers: [],
                 ),
               ],
             );
