@@ -1,6 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
+
+//import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; //svg
 import 'package:http/http.dart';
@@ -17,11 +19,17 @@ import '../../controller/post_controller.dart';
 class CardComponent extends StatefulWidget {
   final PostModel _post;
 
-  const CardComponent({
-    Key? key,
-    required PostModel post,
-    required Function() onTap,
-  }) : _post = post;
+  final Function() _onTap;
+  final List<ExpansionTileController> _controllers;
+
+  const CardComponent(
+      {super.key, required PostModel post, required Function() onTap, required List<ExpansionTileController> controllers})
+      : _post = post,
+        _onTap = onTap,
+        _controllers = controllers;
+
+
+ 
 
   @override
   _CardComponentState createState() => _CardComponentState();
@@ -29,6 +37,7 @@ class CardComponent extends StatefulWidget {
 
 class _CardComponentState extends State<CardComponent> {
   bool _isExpanded = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +59,6 @@ class _CardComponentState extends State<CardComponent> {
     final height = MediaQuery.of(context).size.height; //*0.3が画像の大きさ
     final width = MediaQuery.of(context).size.width; //*0.7
 
-    final ExpansionTileController controller = ExpansionTileController();
-
     Widget imgShow; //画像を表示させるための変数
 
     if (post.IMAGE.contains('svg')) {
@@ -68,7 +75,7 @@ class _CardComponentState extends State<CardComponent> {
         minHeight: height * 0.15,
       ),
       child: ExpansionTile(
-        controller: controller,
+        controller: _controllers[post.id -1], //各カードにcontrollerを割り当て
         collapsedShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
@@ -84,9 +91,11 @@ class _CardComponentState extends State<CardComponent> {
           ),
         ),
         onExpansionChanged: (bool expanded) {
+
           setState(() {
             _isExpanded = expanded;
           });
+
         },
         backgroundColor: ColorConst.cardBackground,
         collapsedBackgroundColor: ColorConst.cardBackground,
@@ -97,19 +106,14 @@ class _CardComponentState extends State<CardComponent> {
           maxLines: _isExpanded ? 20 : 3,
           style: const TextStyle(fontWeight: FontWeight.normal),
         ),
-        childrenPadding: EdgeInsets.symmetric(vertical: 10), //上下方向に10pxパディング
-        // childrenPadding: EdgeInsets.all(10),  //全方向に10pxパディング
+        childrenPadding: EdgeInsets.symmetric(vertical: 10),  //上下方向に10pxパディング
+=
         children: <Widget>[
           SizedBox(
             height: height * 0.3,
             width: width * 0.7,
             child: imgShow, //画像を表示
           ),
-          // SizedBox(  //押されたページだけ閉じます 全部閉じるのはわかりませんでしたすみません
-          //   child: FloatingActionButton(onPressed: (){
-          //     controller.collapse();
-          //   },)
-          // )
         ],
       ),
     );
@@ -122,13 +126,3 @@ class _CardComponentState extends State<CardComponent> {
         : ColorConst.cardFrame2;
   }
 }
-
-// class _CardState extends State<Card> {
-
-//     Widget build(BuildContext context) {
-//       return Container(
-
-//       );
-//     }
-
-// }

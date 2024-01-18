@@ -28,6 +28,8 @@ class _HomeState extends State<Home> {
 
   List<PostModel> _posts = [];
 
+  final List<ExpansionTileController> _controllers = [];
+
   // 各ExpansionTileの状態を管理するリスト
   List<bool> _isExpandedList = [];
 
@@ -45,9 +47,12 @@ class _HomeState extends State<Home> {
     super.initState();
     _posts = PostController().post;
     _posts.shuffle();
+    
+    //投稿の数だけcontrollerを作成
+    for (int i = 0; i < _posts.length; i++) {
+      _controllers.add(ExpansionTileController());
+    }
 
-    // 各ExpansionTileの状態を初期化
-    _isExpandedList = List.generate(_posts.length, (index) => false);
   }
 
   @override
@@ -65,19 +70,30 @@ class _HomeState extends State<Home> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
-
-          // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る
+          
+          // 1秒待機
           await Future.delayed(Duration(seconds: 1));
 
-          if (currentIcon == 'page/MomentIcon.svg') {
-            _posts.sort((a, b) => b.POST_DATE.compareTo(a.POST_DATE));
-          } else if (currentIcon == 'page/RandomIcon.svg') {
+          
+          //データ並び替え
+          if (currentIcon == 'images/page/MomentIcon.svg') {
+            _posts.sort((a, b) => b.date.compareTo(a.date));
+          } else if (currentIcon == 'images/page/RandomIcon.svg') {
             _posts.shuffle();
           }
+        
+          //アイコン切替
 
           toggleIcon();
 
+          //投稿画面に戻る
           Navigator.pop(context);
+
+          //controllerの数だけカードを閉じる
+          for (var controller in _controllers) {
+            controller.collapse();
+          }
+
         },
         child: (SvgPicture.asset(currentIcon)),
       ),
@@ -106,6 +122,7 @@ class _HomeState extends State<Home> {
                 CardComponent(
                   post: _posts[index],
                   onTap: () {},
+                  controllers: _controllers,
                 ),
               ],
             );
