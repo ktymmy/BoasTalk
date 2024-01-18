@@ -26,6 +26,7 @@ class _MypageState extends State<Mypage> {
   List<PostModel> posts = [];
   List<UsersModel> _users = [];
 
+
 //値を取得する関数
   Future<void> fetchData() async {
     final response = await getPost(1);
@@ -37,11 +38,24 @@ class _MypageState extends State<Mypage> {
     });
   }
 
+  final List<ExpansionTileController> _controllers = [];
+
+  DateTime _focusedDay = DateTime.now();
+
   @override
   void initState() {
     super.initState();
     listState();
+
     fetchData();
+
+
+    //投稿の数だけcontrollerを作成
+    for (int i = 0; i < _posts.length; i++) {
+      _controllers.add(ExpansionTileController());
+    }
+
+
   }
 
   void listState() {
@@ -186,10 +200,16 @@ class _MypageState extends State<Mypage> {
             const SizedBox(width: 10),
             CardComponent(
               post: posts[index],
+                                controllers: _controllers,
+
             ),
+            SizedBox(
+                  height: 10,
+                )
           ],
         );
       },
+
     );
   }
 }

@@ -27,6 +27,9 @@ class _HomeState extends State<Home> {
   String currentIcon = 'assets/page/MomentIcon.svg'; //現在のアイコン定義
 
   List<PostModel> posts = [];
+  final List<ExpansionTileController> _controllers = [];
+
+
   // 各ExpansionTileの状態を管理するリスト
   List<bool> isExpandedList = [];
 
@@ -62,6 +65,14 @@ class _HomeState extends State<Home> {
     setState(() {
       posts = fetchedPosts;
     });
+    _posts = PostController().post;
+    _posts.shuffle();
+    
+    //投稿の数だけcontrollerを作成
+    for (int i = 0; i < _posts.length; i++) {
+      _controllers.add(ExpansionTileController());
+    }
+
   }
 
   @override
@@ -79,8 +90,8 @@ class _HomeState extends State<Home> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
-
-          // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る
+          
+          // 1秒待機
           await Future.delayed(Duration(seconds: 1));
 
           if (currentIcon == 'assets/page/MomentIcon.svg') {
@@ -89,7 +100,17 @@ class _HomeState extends State<Home> {
             posts.shuffle();
           }
           toggleIcon();
+
+
+          //投稿画面に戻る
+
           Navigator.pop(context);
+
+          //controllerの数だけカードを閉じる
+          for (var controller in _controllers) {
+            controller.collapse();
+          }
+
         },
         child: (SvgPicture.asset(currentIcon)),
       ),
@@ -103,6 +124,7 @@ class _HomeState extends State<Home> {
 
   //CardComponent
   Widget _card() {
+
     return ListView.builder(
       shrinkWrap: true,
       // physics: NeverScrollableScrollPhysics(),
@@ -114,10 +136,13 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 5),
             CardComponent(
               post: posts[index],
+                                controllers: _controllers,
+
             ),
           ],
         );
       },
+
     );
   }
 }
