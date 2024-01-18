@@ -30,8 +30,8 @@ class _CalendarWidgeState extends State<CalendarWidge>
 
   @override
   Widget build(BuildContext context) {
-    DateTime _focusedDay = DateTime.now();
-    DateTime? _selectedDay;
+    DateTime focusedDay = DateTime.now();
+    // DateTime? _selectedDay; //選択されてる日
 
     return SafeArea(
         child: Scaffold(
@@ -63,7 +63,7 @@ class _CalendarWidgeState extends State<CalendarWidge>
                       child: TableCalendar(
                         firstDay: DateTime.utc(2023, 1, 1),
                         lastDay: DateTime.utc(2050, 12, 31),
-                        focusedDay: _focusedDay,
+                        focusedDay: focusedDay,
 
                         shouldFillViewport: true, //カレンダーの大きさを変える
                         locale: 'ja_JP', //カレンダーを日本語に変換
@@ -87,7 +87,7 @@ class _CalendarWidgeState extends State<CalendarWidge>
                 const SizedBox(
                   height: 10,
                 ),
-                SingleChildScrollView(
+                const SingleChildScrollView(
                     // child: ListComponent(),
                     ),
                 const SizedBox(
@@ -101,7 +101,7 @@ class _CalendarWidgeState extends State<CalendarWidge>
     return Container(
       height: MediaQuery.of(context).size.height * 0.5,
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: ColorConst.base,
       ),
       child: Column(

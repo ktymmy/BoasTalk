@@ -1,4 +1,4 @@
-import '../model/users_model.dart';
+import '../../model/users_model.dart';
 
 class MypageController {
   final List<UsersModel> _users = [
