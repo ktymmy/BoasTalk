@@ -15,6 +15,10 @@ class ColorConst {
   static const Color cardFrame1 = Color.fromRGBO(168, 223, 142, 1);
   static const Color cardFrame2 = Color.fromRGBO(255, 191, 191, 1);
 
+//calendarの色
+  static const Color cdBackground = Colors.white;
+  static const Color cdToday = Color.fromRGBO(168, 223, 142, 1);
+
   //simpleColor
   static const Color white = Colors.white;
   static const Color black = Colors.black;

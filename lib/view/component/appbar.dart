@@ -19,7 +19,7 @@ class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
         child: SvgPicture.asset('assets/images/BoasTalk.svg'),
 
         //TODO:webでrunする場合
-        //child: SvgPicture.asset('images/BoasTalk.svg'),
+        // child: SvgPicture.asset('images/BoasTalk.svg'),
       ),
     );
   }
