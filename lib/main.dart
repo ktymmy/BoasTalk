@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+import 'package:intl/date_symbol_data_local.dart'; //intlインポートする
 
 //page
 import './view/navibar.dart';
@@ -9,7 +10,7 @@ void main() async {
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
 
-  runApp(const MyApp());
+  initializeDateFormatting('ja').then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {

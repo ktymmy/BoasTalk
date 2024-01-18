@@ -1,6 +1,11 @@
 import 'dart:math';
+
+
+//import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; //svg
+import 'package:http/http.dart';
 
 //animation
 import '../animation/animation_flower.dart';
@@ -9,8 +14,11 @@ import '../../constant/color_Const.dart';
 //model
 import '../../model/post_model.dart';
 
-class CardComponent extends StatelessWidget {
+import '../../controller/post_controller.dart';
+
+class CardComponent extends StatefulWidget {
   final PostModel _post;
+
   final Function() _onTap;
   final List<ExpansionTileController> _controllers;
 
@@ -20,21 +28,45 @@ class CardComponent extends StatelessWidget {
         _onTap = onTap,
         _controllers = controllers;
 
+
+ 
+
+  @override
+  _CardComponentState createState() => _CardComponentState();
+}
+
+class _CardComponentState extends State<CardComponent> {
+  bool _isExpanded = false;
+
+
   @override
   Widget build(BuildContext context) {
-    return _Card(_post, context);
+    return FutureBuilder<PostModel>(
+      // future: fetchPhotos(), //TODO:確認
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // データを待っている間はローディングインジケータを表示
+        } else if (snapshot.hasError) {
+          return Text('エラー: ${snapshot.error}');
+        } else {
+          return _Card(snapshot.data!, context);
+        }
+      },
+    );
   }
 
   Widget _Card(PostModel post, BuildContext context) {
-    final height = MediaQuery.of(context).size.height;  //*0.3が画像の大きさ
-    final width = MediaQuery.of(context).size.width;    //*0.7
+    final height = MediaQuery.of(context).size.height; //*0.3が画像の大きさ
+    final width = MediaQuery.of(context).size.width; //*0.7
 
     Widget imgShow; //画像を表示させるための変数
 
-    if(post.imgPath.contains('svg')) { //画像の拡張子が'svg'の場合
-      imgShow = SvgPicture.asset(post.imgPath);
-    }else{ //それ以外の拡張子
-      imgShow = Image.asset(post.imgPath);
+    if (post.IMAGE.contains('svg')) {
+      //画像の拡張子が'svg'の場合
+      imgShow = SvgPicture.asset(post.IMAGE);
+    } else {
+      //それ以外の拡張子
+      imgShow = Image.asset(post.IMAGE);
     }
 
     return Container(
@@ -59,18 +91,23 @@ class CardComponent extends StatelessWidget {
           ),
         ),
         onExpansionChanged: (bool expanded) {
-          //タイルが展開または縮小されるときに呼び出されます
+
+          setState(() {
+            _isExpanded = expanded;
+          });
+
         },
         backgroundColor: ColorConst.cardBackground,
         collapsedBackgroundColor: ColorConst.cardBackground,
         initiallyExpanded: false,
         title: Text(
-          post.contents,
+          post.CONTENTS,
           overflow: TextOverflow.ellipsis,
-          maxLines: 3,
+          maxLines: _isExpanded ? 20 : 3,
           style: const TextStyle(fontWeight: FontWeight.normal),
         ),
         childrenPadding: EdgeInsets.symmetric(vertical: 10),  //上下方向に10pxパディング
+=
         children: <Widget>[
           SizedBox(
             height: height * 0.3,
@@ -82,8 +119,10 @@ class CardComponent extends StatelessWidget {
     );
   }
 
-//枠線の色判定
+  //枠線の色判定
   Color border() {
-    return _post.id % 2 == 0 ? ColorConst.cardFrame1 : ColorConst.cardFrame2;
+    return widget._post.ID % 2 == 0
+        ? ColorConst.cardFrame1
+        : ColorConst.cardFrame2;
   }
 }

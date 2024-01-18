@@ -13,8 +13,8 @@ import 'package:boastalk/model/post_model.dart';
 import 'package:boastalk/controller/post_controller.dart';
 
 //page
-import '../page/moment.dart';
-import '../page/random.dart';
+import '../changeover/moment.dart';
+import '../changeover/random.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -24,18 +24,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String currentIcon = 'images/page/MomentIcon.svg'; //現在のアイコン定義
+  String currentIcon = 'page/MomentIcon.svg'; //現在のアイコン定義
 
   List<PostModel> _posts = [];
 
   final List<ExpansionTileController> _controllers = [];
 
+  // 各ExpansionTileの状態を管理するリスト
+  List<bool> _isExpandedList = [];
+
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
-      currentIcon == 'images/page/MomentIcon.svg'
-          ? currentIcon = 'images/page/RandomIcon.svg'
-          : currentIcon = 'images/page/MomentIcon.svg';
+      currentIcon == 'page/MomentIcon.svg'
+          ? currentIcon = 'page/RandomIcon.svg'
+          : currentIcon = 'page/MomentIcon.svg';
     });
   }
 
@@ -60,16 +63,17 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
         onPressed: () async {
-          if (currentIcon == 'images/page/MomentIcon.svg') {
+          if (currentIcon == 'page/MomentIcon.svg') {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Moment()));
-          } else if (currentIcon == 'images/page/RandomIcon.svg') {
+          } else if (currentIcon == 'page/RandomIcon.svg') {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
           
           // 1秒待機
           await Future.delayed(Duration(seconds: 1));
+
           
           //データ並び替え
           if (currentIcon == 'images/page/MomentIcon.svg') {
@@ -79,6 +83,7 @@ class _HomeState extends State<Home> {
           }
         
           //アイコン切替
+
           toggleIcon();
 
           //投稿画面に戻る
