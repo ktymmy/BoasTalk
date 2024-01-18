@@ -1,41 +1,42 @@
 import 'dart:convert';
 
 class PostModel {
-  final int ID;
-  final int USER_ID;
-  final String IMAGE;
-  final String CONTENTS;
-  final DateTime POST_DATE;
+  final int id;
+  final int userId;
+  final String image;
+  final String contents;
+  final DateTime postDate;
 
   PostModel({
-    required this.ID,
-    required this.USER_ID,
-    required this.IMAGE,
-    required this.CONTENTS,
-    required this.POST_DATE,
+    required this.id,
+    required this.userId,
+    required this.image,
+    required this.contents,
+    required this.postDate,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      ID: json['ID'],
-      USER_ID: json['USER_ID'],
-      IMAGE: json['IMAGE'],
-      CONTENTS: json['CONTENTS'],
-      POST_DATE: DateTime.parse(json['POST_DATE']), // StringをDateTimeに変換
+      id: json['ID'] ?? 0,
+      userId: json['USER_ID'] ?? 0,
+      image: json['IMAGE'] ?? "",
+      contents: json['CONTENTS'] ?? "",
+      postDate: json['POST_DATE'] != null
+          ? DateTime.parse(json['POST_DATE'])
+          : DateTime.now(), // 仮にデフォルトの値を設定
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "ID": ID,
-        "USER_ID": USER_ID,
-        "IMAGE": IMAGE,
-        "CONTENTS": CONTENTS,
-        "POST_DATE": POST_DATE.toIso8601String(), // DateTimeをStringに変換
+        "ID": id,
+        "USER_ID": userId,
+        "IMAGE": image,
+        "CONTENTS": contents,
+        "POST_DATE": postDate.toIso8601String(),
       };
 
   static PostModel postModelFromJson(String str) =>
       PostModel.fromJson(json.decode(str));
 
   static String postModelToJson(PostModel post) => json.encode(post.toJson());
-  // JSONデータをDartオブジェクトに変換
 }
