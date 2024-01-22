@@ -12,6 +12,7 @@ import '../../model/users_model.dart';
 import '../../controller/mypage_controller.dart';
 //page
 import '../page/calendar.dart';
+import '../login/signup.dart';
 //api
 import '../../api/post_api.dart';
 
@@ -76,10 +77,18 @@ class _MypageState extends State<Mypage> {
                 SizedBox(
                   height: height * 0.1,
                   width: width * 0.3,
-                  child: const Icon(
-                    Icons.settings,
-                    color: ColorConst.icon,
-                    size: 25.0,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Signup()),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.settings,
+                      color: ColorConst.icon,
+                      size: 25,
+                    ),
                   ),
                 ),
               ],
