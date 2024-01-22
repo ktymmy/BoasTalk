@@ -22,4 +22,7 @@ class ColorConst {
   //simpleColor
   static const Color white = Colors.white;
   static const Color black = Colors.black;
+
+  //login
+  static const Color stringBrack = Colors.black54;
 }

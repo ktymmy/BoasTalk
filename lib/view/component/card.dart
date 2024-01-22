@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; //svg
-// import 'dart:convert';
-
 //constant
 import '../../constant/color_Const.dart';
 //model
 import '../../model/post_model.dart';
-//api
 
 class CardComponent extends StatefulWidget {
   final PostModel post;
@@ -29,16 +25,8 @@ class _CardComponentState extends State<CardComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height; //*0.3が画像の大きさ
-    final width = MediaQuery.of(context).size.width; //*0.7
-
-    Widget imgShow; //画像を表示させるための変数
-
-    if (widget.post.image.contains('svg')) {
-      imgShow = SvgPicture.asset(widget.post.image);
-    } else {
-      imgShow = Image.asset(widget.post.image);
-    }
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return Container(
       width: width * 0.9,
@@ -57,6 +45,8 @@ class _CardComponentState extends State<CardComponent> {
         minHeight: height * 0.12,
       ),
       child: ExpansionTile(
+        //TODO:Statelessじゃないと動かないので見直す必要がある
+
         // controller: _controllers[post.id - 1], //各カードにcontrollerを割り当て
 
         collapsedShape: RoundedRectangleBorder(
@@ -78,7 +68,7 @@ class _CardComponentState extends State<CardComponent> {
             _isExpanded = expanded;
           });
         },
-        collapsedBackgroundColor: ColorConst.cardBackground, //cardを開く前の色
+        collapsedBackgroundColor: ColorConst.cardBackground, //:cardを開く前の色
         backgroundColor: ColorConst.cardBackground, //cardを開いた後の色
         initiallyExpanded: false, //false = 閉じられた状態で表示
         title: Text(
@@ -94,11 +84,17 @@ class _CardComponentState extends State<CardComponent> {
         //childrenPadding: EdgeInsets.symmetric(vertical: 10),  //上下方向に10pxパディング
 
         children: <Widget>[
-          SizedBox(
-            height: height * 0.3,
-            width: width * 0.7,
-            child: imgShow,
-          ),
+          widget.post.image != null
+              ? SizedBox(
+                  height: height * 0.3,
+                  width: width * 0.7,
+                  child: Image.network(
+                    widget.post.image,
+                    errorBuilder: (c, o, s) {
+                      return Container();
+                    },
+                  ))
+              : Container()
         ],
       ),
     );

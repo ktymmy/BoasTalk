@@ -87,10 +87,8 @@ class _HomeState extends State<Home> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
-
-          // 1秒待機
-          await Future.delayed(Duration(seconds: 1));
-
+          await Future.delayed(Duration(seconds: 1)); // 1秒待機
+          //シャッフル
           if (currentIcon == 'assets/page/MomentIcon.svg') {
             posts.sort((a, b) => b.postDate.compareTo(a.postDate));
           } else if (currentIcon == 'assets/page/RandomIcon.svg') {
