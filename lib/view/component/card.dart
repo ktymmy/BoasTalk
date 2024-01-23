@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 //constant
 import '../../constant/color_Const.dart';
 //model
@@ -22,6 +23,7 @@ class CardComponent extends StatefulWidget {
 
 class _CardComponentState extends State<CardComponent> {
   bool _isExpanded = false;
+  final List<ExpansionTileController> _controller = [];
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +47,21 @@ class _CardComponentState extends State<CardComponent> {
         minHeight: height * 0.12,
       ),
       child: ExpansionTile(
-        //TODO:Statelessじゃないと動かないので見直す必要がある
-
-        // controller: _controllers[post.id - 1], //各カードにcontrollerを割り当て
+        //XXX:Statelessじゃないと動かないので見直す必要がある
+        // controller: _controller[widget.post.id], //各カードにcontrollerを割り当て
 
         collapsedShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
             width: 1,
-            color: border(),
+            color: ColorConst.cardFrame2,
           ),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
             width: 1,
-            color: border(),
+            color: ColorConst.cardFrame2,
           ),
         ),
         onExpansionChanged: (bool expanded) {
@@ -70,12 +71,20 @@ class _CardComponentState extends State<CardComponent> {
         },
         collapsedBackgroundColor: ColorConst.cardBackground, //:cardを開く前の色
         backgroundColor: ColorConst.cardBackground, //cardを開いた後の色
+        textColor: ColorConst.black,
+        collapsedTextColor: ColorConst.black,
         initiallyExpanded: false, //false = 閉じられた状態で表示
-        title: Text(
-          widget.post.contents, //["CONTENTS"]
-          overflow: TextOverflow.ellipsis, //文字がoverflowしたら『...』に置き換える
-          maxLines: _isExpanded ? 20 : 3, //開いているとき20行、閉じているとき3行
-          style: const TextStyle(fontWeight: FontWeight.normal),
+        title: Stack(
+          children: [
+            Text(
+              widget.post.contents, //["CONTENTS"]
+              overflow: TextOverflow.ellipsis, //文字がoverflowしたら『...』に置き換える
+              maxLines: _isExpanded ? 20 : 3, //開いているとき20行、閉じているとき3行
+              style: const TextStyle(fontWeight: FontWeight.normal),
+            ),
+            Positioned(
+                height: 100, child: SvgPicture.asset("assets/flower/5.svg"))
+          ],
         ),
 
         childrenPadding:
@@ -91,10 +100,12 @@ class _CardComponentState extends State<CardComponent> {
                   child: Image.network(
                     widget.post.image,
                     errorBuilder: (c, o, s) {
-                      return Container();
+                      return SizedBox(
+                        height: 0,
+                      );
                     },
                   ))
-              : Container()
+              : Container(),
         ],
       ),
     );

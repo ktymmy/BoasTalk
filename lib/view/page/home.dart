@@ -96,21 +96,24 @@ class _HomeState extends State<Home> {
           }
           toggleIcon();
 
-          //投稿画面に戻る
-
           Navigator.pop(context);
 
-          //controllerの数だけカードを閉じる
           for (var controller in _controllers) {
             controller.collapse();
           }
         },
         child: (SvgPicture.asset(currentIcon)),
       ),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-        height: MediaQuery.of(context).size.height,
-        child: _card(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          // データを更新する処理をここに追加
+          await fetchData();
+        },
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+          height: MediaQuery.of(context).size.height,
+          child: _card(),
+        ),
       ),
     );
   }

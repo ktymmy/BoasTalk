@@ -21,7 +21,7 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   static const _pages = [Post(), Home(), Mypage()]; //navibarの位置と紐づけられている
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:boastalk/view/page/home.dart';
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,9 +33,9 @@ class _PostState extends State<Post> {
     super.initState();
     bool a = false;
     // TODO:if文
-    if (a) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) => _time());
-    }
+    //   if (a) {
+    //     WidgetsBinding.instance!.addPostFrameCallback((_) => _time());
+    //   }
   }
 
   @override
@@ -176,8 +177,11 @@ class _PostState extends State<Post> {
           int userID = 3; // TODO:ユーザーIDを取ってくる
           String imagePath = _image!.path;
           postDataToServer(imagePath, contents, userID);
-          print(imagePath);
         }
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Navigation()),
+          (route) => false,
+        );
       },
       icon: Icon(
         Icons.send,

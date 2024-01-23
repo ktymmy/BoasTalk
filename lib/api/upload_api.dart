@@ -25,14 +25,11 @@ Future<void> postDataToServer(String image, String contents, int userID) async {
 
     var response = await request.send();
     if (response.statusCode == 200) {
-      // サーバーからの正常なレスポンス
-      print('Data posted successfully.');
+      print('レスポンス完了');
     } else {
-      // サーバーエラー
-      print('Failed to post data. Status code: ${response.statusCode}');
+      print('データ送信失敗: ${response.statusCode}');
     }
   } catch (error) {
-    // 通信エラー
     print('Error: $error');
   }
 }
