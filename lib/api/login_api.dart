@@ -20,7 +20,6 @@ Future<void> postDataToServer(
       body: formData,
     );
 
-    // Print the server response
     print('Response status code: ${response.statusCode}');
     print('Response body: ${response.body}');
 
