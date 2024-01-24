@@ -39,7 +39,7 @@ class _MypageState extends State<Mypage> {
 
   final List<ExpansionTileController> _controllers = [];
 
-  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -106,8 +106,8 @@ class _MypageState extends State<Mypage> {
                         SizedBox(
                           width: width * 0.3,
                         ),
-                        const Text(
-                          '今日の投稿',
+                        Text(
+                          showDate(_selectedDate), //選択された日付を表示
                           style: TextStyle(color: ColorConst.main),
                         ),
                         SizedBox(
@@ -115,12 +115,18 @@ class _MypageState extends State<Mypage> {
                         ),
                         Container(
                           child: IconButton(
-                            onPressed: () {
-                              Navigator.push(
+                            onPressed: () async {
+                              DateTime result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CalendarWidge()),
                               );
+
+                              if (result != null) {
+                                setState(() {
+                                  _selectedDate = result;
+                                });
+                              }
                             },
                             icon: const Icon(
                               Icons.calendar_month_outlined,
@@ -206,4 +212,15 @@ class _MypageState extends State<Mypage> {
       },
     );
   }
+
+  showDate(DateTime selectDate) {
+    String year = selectDate.year.toString();
+    String month = selectDate.month.toString();
+    String day = selectDate.day.toString();
+
+    String header = year + "年" + month + "月" + day + "日の投稿";
+
+    return header;
+  }
+
 }
