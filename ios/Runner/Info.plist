@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>アプリ内で写真を選んでアップロードするためには、写真ライブラリへのアクセス許可が必要です。</string>
+    <key>NSCameraUsageDescription</key>
+    <string>アプリ内で写真を撮ってアップロードするためにカメラへのアクセスが必要です。</string>
 </dict>
 </plist>
