@@ -178,10 +178,7 @@ class _PostState extends State<Post> {
           String imagePath = _image!.path;
           postDataToServer(imagePath, contents, userID);
         }
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Navigation()),
-          (route) => false,
-        );
+        _post;
       },
       icon: Icon(
         Icons.send,
@@ -322,6 +319,41 @@ class _PostState extends State<Post> {
                 ],
               ),
             ));
+  }
+
+  // 投稿時のダイアログ
+  _post() {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final double fontSize = 15;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+          insetPadding: EdgeInsets.fromLTRB(
+              width * 0.05, height * 0.28, width * 0.05, height * 0.28),
+          backgroundColor: ColorConst.base,
+          title: Text(
+            "投稿しました",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: fontSize),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          content: TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Navigation()),
+              );
+            },
+            child: Text(
+              "戻る",
+              style: TextStyle(color: Colors.black),
+            ),
+          )),
+    );
   }
 
   // ギャラリーから画像を取得する関数
