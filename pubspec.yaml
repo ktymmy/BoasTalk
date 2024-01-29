@@ -40,6 +40,12 @@ dependencies:
   table_calendar: ^3.0.9
   http: ^1.1.0
   path: ^1.8.0
+  flutter_native_splash: ^2.3.7
+
+# スプラッシュ画面の設定を追加
+flutter_native_splash: # 追加
+  image: "assets/images/🌸.png" # [png, apng, jpg, jpeg, jpe, jfif, tga, tpic, gif, ico, bmp, dib]しか対応していない
+  color: "#FFFFFF" # 画面全体の背景色を16進数で指定
 
 dev_dependencies:
   flutter_test:
