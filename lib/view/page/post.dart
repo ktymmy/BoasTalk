@@ -1,14 +1,13 @@
 import 'dart:io';
-import 'package:boastalk/view/page/home.dart';
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../api/upload_api.dart';
+import '../../api/upload_time_api.dart';
 import '../component/appbar.dart';
 import 'package:image_picker/image_picker.dart';
 import '../navibar.dart';
 import 'detail_page.dart';
-import 'package:path/path.dart' as path;
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -29,13 +28,19 @@ class _PostState extends State<Post> {
 
   String contents = ''; // テキストを保持する変数
 
+  int userId = 3; // TODO:ユーザーIDを取ってくる
+
   void initState() {
     super.initState();
-    bool a = false;
-    // TODO:if文
-    //   if (a) {
-    //     WidgetsBinding.instance!.addPostFrameCallback((_) => _time());
-    //   }
+    Future(() async {
+      int time = 3600 - await uploadTime(userId);
+      int minutes = time ~/ 60;
+      int seconds = time % 60;
+      if (time < 3600) {
+        WidgetsBinding.instance!
+            .addPostFrameCallback((_) => _time(minutes, seconds));
+      }
+    });
   }
 
   @override
@@ -174,11 +179,10 @@ class _PostState extends State<Post> {
       onPressed: () {
         // 文章が入力されているか判別するif
         if (formKey.currentState!.validate()) {
-          int userID = 3; // TODO:ユーザーIDを取ってくる
           String imagePath = _image!.path;
-          postDataToServer(imagePath, contents, userID);
+          postDataToServer(imagePath, contents, userId);
+          _post();
         }
-        _post;
       },
       icon: Icon(
         Icons.send,
@@ -276,10 +280,11 @@ class _PostState extends State<Post> {
             ));
   }
 
-  _time() {
+  _time(int minutes, int seconds) async {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final double fontSize = 15;
+    String second = seconds.toString().padLeft(2, "0");
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -288,8 +293,7 @@ class _PostState extends State<Post> {
                   width * 0.05, height * 0.28, width * 0.05, height * 0.28),
               backgroundColor: ColorConst.base,
               title: Text(
-                //TODO:時間の表示
-                "次の投稿ができるまで\nあと 59 : 31",
+                "次の投稿ができるまで\nあと$minutes分 $second秒",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: fontSize),
               ),
@@ -405,7 +409,6 @@ class _PostState extends State<Post> {
 
 String? _validateName(String? value) {
   if (value == null || value.isEmpty) {
-    // TODO:文章考える
     return '入力してください。';
   }
   return null;
