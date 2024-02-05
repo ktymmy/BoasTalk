@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
-Future<void> postDataToServer(String image, String contents, int userID) async {
+Future<void> postDataToServer(
+    String? image, String contents, int userID) async {
   try {
-    final Uri url =
-        Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/insert.php');
+    // TODO:url書く
+    final Uri url = Uri.parse('');
 
     var request = http.MultipartRequest('POST', url)
       ..fields['contents'] = contents
@@ -33,42 +34,3 @@ Future<void> postDataToServer(String image, String contents, int userID) async {
     print('Error: $error');
   }
 }
-
-// imageがnullの場合
-
-// import 'package:http/http.dart' as http;
-
-// // 画像やテキストをサーバーに送信するメソッド
-// Future<void> postDataToServer(String image, String Contents, int userID) async {
-//   try {
-//     final Uri url =
-//         Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/insert.php');
-
-//     // 有効な値を保持するための Map を作成
-//     final Map<String, dynamic> requestBody = {
-//       'contents': Contents,
-//       'user_id': userID.toString(),
-//     };
-
-//     // 'image' が null でない場合のみ requestBody に追加
-//     if (image != null) {
-//       requestBody['image'] = image;
-//     }
-
-//     final response = await http.post(
-//       url,
-//       body: requestBody,
-//     );
-
-//     if (response.statusCode == 200) {
-//       // サーバーからの正常なレスポンス
-//       print('Data posted successfully.');
-//     } else {
-//       // サーバーエラー
-//       print('Failed to post data. Status code: ${response.statusCode}');
-//     }
-//   } catch (error) {
-//     // 通信エラー
-//     print('Error: $error');
-//   }
-// }
