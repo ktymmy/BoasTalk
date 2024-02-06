@@ -1,3 +1,6 @@
+import 'package:boastalk/view/page/home.dart';
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 //constant
@@ -186,6 +189,7 @@ class _MypageState extends State<Mypage> {
 
   bool tap = false;
   Widget _card() {
+
     return ListView.builder(
       shrinkWrap: false,
       itemCount: posts.length,

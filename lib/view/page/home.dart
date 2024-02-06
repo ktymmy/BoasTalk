@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
   final List<ExpansionTileController> _controllers = [];
 
   // 各ExpansionTileの状態を管理するリスト
+
   List<bool> isExpandedList = [];
 
   void toggleIcon() {

@@ -5,7 +5,10 @@ import '../../constant/color_Const.dart';
 import '../../model/post_model.dart';
 
 class CardComponent extends StatefulWidget {
+
+
   final PostModel post;
+   final int _index;
 
   final List<ExpansionTileController> _controllers;
 
@@ -15,6 +18,7 @@ class CardComponent extends StatefulWidget {
       required List<ExpansionTileController> controllers})
       : post = post,
         _controllers = controllers;
+
 
   @override
   _CardComponentState createState() => _CardComponentState();
@@ -117,7 +121,8 @@ class _CardComponentState extends State<CardComponent> {
   }
 
   Color border() {
-    return widget.post.id % 2 == 0
+    return widget._index % 2 == 0
+
         ? ColorConst.cardFrame1
         : ColorConst.cardFrame2;
   }
