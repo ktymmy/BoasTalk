@@ -179,8 +179,10 @@ class _PostState extends State<Post> {
       onPressed: () {
         // 文章が入力されているか判別するif
         if (formKey.currentState!.validate()) {
-          String imagePath = _image!.path;
-          postDataToServer(imagePath, contents, userId);
+          int userID = 3; // TODO:ユーザーIDを取ってくる
+          String? imagePath = _image?.path;
+          postDataToServer(imagePath, contents, userID);
+
           _post();
         }
       },
