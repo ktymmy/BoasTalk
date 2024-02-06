@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart'; //intlインポートする
+import 'intro_view.dart';
 
 //page
-import './view/navibar.dart';
+// import './view/navibar.dart';
 
 void main() async {
   // await Firebase.initializeApp(
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // home: _isLoggedIn == true ? Navigation() : LoginPage(),
-      home: Navigation(),
+      // home: introViewSample(),
+      home: FlutterOverboardPage(),
     );
   }
 }

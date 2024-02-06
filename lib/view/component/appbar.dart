@@ -11,6 +11,7 @@ class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       // toolbarHeight: 100,
+      automaticallyImplyLeading: false, // 左上の矢印消すやつ
       backgroundColor: ColorConst.base,
       elevation: 0,
       centerTitle: true,
