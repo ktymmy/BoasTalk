@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:boastalk/api/upload_like_api.dart';
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
 import 'package:flutter_svg/svg.dart';
@@ -33,12 +34,14 @@ class _PostState extends State<Post> {
   void initState() {
     super.initState();
     Future(() async {
-      int time = 3600 - await uploadTime(userId);
-      int minutes = time ~/ 60;
-      int seconds = time % 60;
-      if (time < 3600) {
+      int time = await uploadTime(userId);
+      int like = await uploadLike(userId);
+      if (time < 60 && like < 5) {
+        time = 60 - time;
+        int minutes = time ~/ 60;
+        int seconds = time % 60;
         WidgetsBinding.instance!
-            .addPostFrameCallback((_) => _time(minutes, seconds));
+            .addPostFrameCallback((_) => _time(minutes, seconds, like));
       }
     });
   }
@@ -179,10 +182,8 @@ class _PostState extends State<Post> {
       onPressed: () {
         // 文章が入力されているか判別するif
         if (formKey.currentState!.validate()) {
-          int userID = 3; // TODO:ユーザーIDを取ってくる
           String? imagePath = _image?.path;
-          postDataToServer(imagePath, contents, userID);
-
+          postDataToServer(imagePath, contents, userId);
           _post();
         }
       },
@@ -282,7 +283,7 @@ class _PostState extends State<Post> {
             ));
   }
 
-  _time(int minutes, int seconds) async {
+  _time(int minutes, int seconds, int like) async {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final double fontSize = 15;
@@ -305,8 +306,7 @@ class _PostState extends State<Post> {
               content: Column(
                 children: <Widget>[
                   SvgPicture.asset(
-                    // TODO:画像表示
-                    'assets/flower/5.svg',
+                    'assets/flower/$like.svg',
                     width: width * 0.2,
                     height: height * 0.2,
                   ),
