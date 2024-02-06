@@ -6,6 +6,7 @@ class PostModel {
   final String image;
   final String contents;
   final DateTime postDate;
+  final int display;
 
   PostModel({
     required this.id,
@@ -13,7 +14,20 @@ class PostModel {
     required this.image,
     required this.contents,
     required this.postDate,
+    required this.display,
   });
+
+  // Factory method to create a new instance with updated display value
+  PostModel copyWithDisplay(int newDisplay) {
+    return PostModel(
+      id: id,
+      userId: userId,
+      image: image,
+      contents: contents,
+      postDate: postDate,
+      display: newDisplay,
+    );
+  }
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
@@ -23,7 +37,8 @@ class PostModel {
       contents: json['CONTENTS'] ?? "",
       postDate: json['POST_DATE'] != null
           ? DateTime.parse(json['POST_DATE'])
-          : DateTime.now(), // 仮にデフォルトの値を設定
+          : DateTime.now(),
+      display: json['DISPLAY'] ?? 0,
     );
   }
 
@@ -33,6 +48,7 @@ class PostModel {
         "IMAGE": image,
         "CONTENTS": contents,
         "POST_DATE": postDate.toIso8601String(),
+        "DISPLAY": display,
       };
 
   static PostModel postModelFromJson(String str) =>
