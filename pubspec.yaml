@@ -41,6 +41,7 @@ dependencies:
   http: ^1.1.0
   path: ^1.8.0
   flutter_native_splash: ^2.3.7
+  flutter_slidable: ^3.0.1
 
 # スプラッシュ画面の設定を追加
 flutter_native_splash: # 追加
