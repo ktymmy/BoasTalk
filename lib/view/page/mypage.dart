@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:boastalk/view/page/home.dart';
 
+
+import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 //constant
 import 'package:boastalk/constant/color_Const.dart';
+import '../../constant/String_Const.dart';
 //component
 import '../component/appbar.dart';
 import '../component/card.dart';
@@ -12,6 +16,7 @@ import '../../model/users_model.dart';
 import '../../controller/mypage_controller.dart';
 //page
 import '../page/calendar.dart';
+import '../login/signup.dart';
 //api
 import '../../api/post_api.dart';
 
@@ -25,6 +30,8 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
   List<PostModel> posts = [];
   List<UsersModel> _users = [];
+  final _displayKey = GlobalKey<FormState>();
+  String _display = "";
 
 //値を取得する関数
   Future<void> fetchData() async {
@@ -43,9 +50,7 @@ class _MypageState extends State<Mypage> {
   void initState() {
     super.initState();
     listState();
-
     fetchData();
-
     //投稿の数だけcontrollerを作成
     for (int i = 0; i < posts.length; i++) {
       _controllers.add(ExpansionTileController());
@@ -74,10 +79,18 @@ class _MypageState extends State<Mypage> {
                 SizedBox(
                   height: height * 0.1,
                   width: width * 0.3,
-                  child: const Icon(
-                    Icons.settings,
-                    color: ColorConst.icon,
-                    size: 25.0,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Signup()),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.settings,
+                      color: ColorConst.icon,
+                      size: 25,
+                    ),
                   ),
                 ),
               ],
@@ -87,13 +100,6 @@ class _MypageState extends State<Mypage> {
             Container(
                 height: height * 0.59,
                 width: width * 0.85,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: ColorConst.main,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
                 child: Column(
                   children: [
                     SizedBox(
@@ -104,8 +110,8 @@ class _MypageState extends State<Mypage> {
                         SizedBox(
                           width: width * 0.3,
                         ),
-                        Text(
-                          "今日の投稿", 
+                        const Text(
+                          '今日の投稿',
                           style: TextStyle(color: ColorConst.main),
                         ),
                         SizedBox(
@@ -115,11 +121,11 @@ class _MypageState extends State<Mypage> {
                           child: IconButton(
                             onPressed: () async {
                               await Navigator.push(
+
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CalendarWidge()),
                               );
-
                             },
                             icon: const Icon(
                               Icons.calendar_month_outlined,
@@ -151,7 +157,6 @@ class _MypageState extends State<Mypage> {
     final fontBold = FontWeight.bold;
 
     return Container(
-      // height: height * 0.25,
       width: width * 0.7,
       child: Column(
         children: [
@@ -184,7 +189,9 @@ class _MypageState extends State<Mypage> {
     );
   }
 
+  bool tap = false;
   Widget _card() {
+
     return ListView.builder(
       shrinkWrap: false,
       itemCount: posts.length,
@@ -192,10 +199,27 @@ class _MypageState extends State<Mypage> {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(width: 10),
-            CardComponent(
-              post: posts[index],
-              controllers: _controllers,
+            Slidable(
+              key: UniqueKey(),
+              endActionPane: ActionPane(motion: ScrollMotion(), children: [
+                SlidableAction(
+                  onPressed: (context) {
+                    setState(() {
+                      PostModel updatedPost = posts[index].copyWithDisplay(1);
+
+                      posts[index] = updatedPost;
+                    });
+                  },
+                  backgroundColor: Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: '削除',
+                ),
+              ]),
+              child: CardComponent(
+                post: posts[index],
+                controllers: _controllers,
+              ),
             ),
             SizedBox(
               height: 10,

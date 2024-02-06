@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 
 //constant
@@ -9,11 +8,10 @@ import '../component/card.dart';
 import '../component/appbar.dart';
 //model
 import 'package:boastalk/model/post_model.dart';
-
 //page
 import '../changeover/moment.dart';
 import '../changeover/random.dart';
-
+//api
 import '../../api/post_api.dart';
 
 class Home extends StatefulWidget {
@@ -31,15 +29,12 @@ class _HomeState extends State<Home> {
   ScrollController _scrollController = ScrollController();
 
   // 各ExpansionTileの状態を管理するリスト
+
   List<bool> isExpandedList = [];
 
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
-      // currentIcon == 'page/MomentIcon.svg'
-      //     ? currentIcon = 'page/RandomIcon.svg'
-      //     : currentIcon = 'page/MomentIcon.svg';
-
       //実機で実行時 assets/必ず前に付ける
       currentIcon == 'assets/page/MomentIcon.svg'
           ? currentIcon = 'assets/page/RandomIcon.svg'
@@ -88,10 +83,8 @@ class _HomeState extends State<Home> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
-
-          // 1秒待機
-          await Future.delayed(Duration(seconds: 1));
-
+          await Future.delayed(Duration(seconds: 1)); // 1秒待機
+          //シャッフル
           if (currentIcon == 'assets/page/MomentIcon.svg') {
             posts.sort((a, b) => b.postDate.compareTo(a.postDate));
           } else if (currentIcon == 'assets/page/RandomIcon.svg') {
@@ -99,11 +92,8 @@ class _HomeState extends State<Home> {
           }
           toggleIcon();
 
-          //投稿画面に戻る
-
           Navigator.pop(context);
 
-          //controllerの数だけカードを閉じる
           for (var controller in _controllers) {
             controller.collapse();
           }
@@ -118,10 +108,16 @@ class _HomeState extends State<Home> {
         },
         child: (SvgPicture.asset(currentIcon)),
       ),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-        height: MediaQuery.of(context).size.height,
-        child: _card(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          // データを更新する処理をここに追加
+          await fetchData();
+        },
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+          height: MediaQuery.of(context).size.height,
+          child: _card(),
+        ),
       ),
     );
   }
@@ -129,19 +125,23 @@ class _HomeState extends State<Home> {
   //CardComponent
   Widget _card() {
     return ListView.builder(
+
       controller: _scrollController,
       shrinkWrap: true,
       // physics: NeverScrollableScrollPhysics(),
+
       itemCount: posts.length,
       itemBuilder: (context, index) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 5),
             CardComponent(
               post: posts[index],
               controllers: _controllers,
             ),
+            SizedBox(
+              height: 10,
+            )
           ],
         );
       },
