@@ -15,7 +15,7 @@ class _RandomState extends State<Random> {
     return Scaffold(
       backgroundColor: ColorConst.base,
       body: Center(
-        child: SvgPicture.asset('page/Random.svg'), //
+        child: SvgPicture.asset('assets/page/Random.svg'), //
       ),
     );
   }

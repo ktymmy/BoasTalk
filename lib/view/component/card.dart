@@ -1,128 +1,129 @@
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; //svg
-
-//animation
-import '../animation/animation_flower.dart';
 //constant
 import '../../constant/color_Const.dart';
 //model
 import '../../model/post_model.dart';
 
 class CardComponent extends StatefulWidget {
-  final PostModel _post;
-  final Function() _onTap;
-  final int _index;
 
-  const CardComponent({
-    Key? key,
-    required PostModel post,
-    required Function() onTap,
-    required int index,
-  })  : _post = post,
-        _index = index,
-        // const CardComponent(
-        //     {super.key, required PostModel post, required Function() onTap})
-        //     : _post = post,
-        _onTap = onTap;
+
+  final PostModel post;
+   final int _index;
+
+  final List<ExpansionTileController> _controllers;
+
+  const CardComponent(
+      {super.key,
+      required PostModel post,
+      required List<ExpansionTileController> controllers})
+      : post = post,
+        _controllers = controllers;
+
 
   @override
   _CardComponentState createState() => _CardComponentState();
 }
 
 class _CardComponentState extends State<CardComponent> {
-  bool _isExpanded = false; //
+  bool _isExpanded = false;
+  bool _doubletap = false;
+  final List<ExpansionTileController> _controller = [];
 
   @override
   Widget build(BuildContext context) {
-    return _Card(widget._post, context);
-  }
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
-  Widget _Card(PostModel post, BuildContext context) {
-    final height = MediaQuery.of(context).size.height; //*0.3が画像の大きさ
-    final width = MediaQuery.of(context).size.width; //*0.7
-
-    final ExpansionTileController controller = ExpansionTileController();
-
-    Widget imgShow; //画像を表示させるための変数
-
-    if (post.imgPath.contains('svg')) {
-      //画像の拡張子が'svg'の場合
-      imgShow = SvgPicture.asset(post.imgPath);
-    } else {
-      //それ以外の拡張子
-      imgShow = Image.asset(post.imgPath);
-    }
-
-    return Container(
-      width: width * 0.9,
-      constraints: BoxConstraints(
-        minHeight: height * 0.15,
-      ),
-      child: ExpansionTile(
-        controller: controller,
-        collapsedShape: RoundedRectangleBorder(
+    return GestureDetector(
+      onDoubleTap: () {
+        // ダブルタップ時の処理をここに追加
+        print('ダブルタップ Post ID: ${widget.post.id}');
+        _doubletap = true;
+      },
+      child: Container(
+        width: width * 0.9,
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            width: 1,
-            color: border(),
-          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2), // 影の色と透明度
+              spreadRadius: 0, // 横方向への広がり
+              blurRadius: 1, // ぼかしの強さ
+              offset: const Offset(2, 3), // 影の位置（縦方向、横方向）
+            ),
+          ],
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            width: 1,
-            color: border(),
-          ),
+        constraints: BoxConstraints(
+          minHeight: height * 0.12,
         ),
-        onExpansionChanged: (bool expanded) {
-          setState(() {
-            _isExpanded = expanded;
-          });
-        },
-        backgroundColor: ColorConst.cardBackground,
-        collapsedBackgroundColor: ColorConst.cardBackground,
-        initiallyExpanded: false,
-        title: Text(
-          post.contents,
-          overflow: TextOverflow.ellipsis,
-          maxLines: _isExpanded ? 20 : 3,
-          style: const TextStyle(fontWeight: FontWeight.normal),
-        ),
-        childrenPadding: EdgeInsets.symmetric(vertical: 10), //上下方向に10pxパディング
-        // childrenPadding: EdgeInsets.all(10),  //全方向に10pxパディング
-        children: <Widget>[
-          SizedBox(
-            height: height * 0.3,
-            width: width * 0.7,
-            child: imgShow, //画像を表示
+        child: ExpansionTile(
+          //XXX:Statelessじゃないと動かないので見直す必要がある
+          // controller: _controller[widget.post.id], //各カードにcontrollerを割り当て
+
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              width: 1,
+              color: ColorConst.cardFrame2,
+            ),
           ),
-          // SizedBox(  //押されたページだけ閉じます 全部閉じるのはわかりませんでしたすみません
-          //   child: FloatingActionButton(onPressed: (){
-          //     controller.collapse();
-          //   },)
-          // )
-        ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: const BorderSide(
+              width: 1,
+              color: ColorConst.cardFrame2,
+            ),
+          ),
+          onExpansionChanged: (bool expanded) {
+            setState(() {
+              _isExpanded = expanded;
+            });
+          },
+          collapsedBackgroundColor: ColorConst.cardBackground, //:cardを開く前の色
+          backgroundColor: ColorConst.cardBackground, //cardを開いた後の色
+          textColor: ColorConst.black,
+          collapsedTextColor: ColorConst.black,
+          initiallyExpanded: false, //false = 閉じられた状態で表示
+          title: Stack(
+            children: [
+              Text(
+                widget.post.contents, //["CONTENTS"]
+                overflow: TextOverflow.ellipsis, //文字がoverflowしたら『...』に置き換える
+                maxLines: _isExpanded ? 20 : 3, //開いているとき20行、閉じているとき3行
+                style: const TextStyle(fontWeight: FontWeight.normal),
+              ),
+            ],
+          ),
+
+          childrenPadding:
+              EdgeInsets.symmetric(vertical: 10), //cardを開いた時の写真のpadding
+
+          //childrenPadding: EdgeInsets.symmetric(vertical: 10),  //上下方向に10pxパディング
+
+          children: <Widget>[
+            widget.post.image != null
+                ? SizedBox(
+                    height: height * 0.3,
+                    width: width * 0.7,
+                    child: Image.network(
+                      widget.post.image,
+                      errorBuilder: (c, o, s) {
+                        return SizedBox(
+                          height: 0,
+                        );
+                      },
+                    ))
+                : Container(),
+          ],
+        ),
       ),
     );
   }
 
-  //枠線の色判定
   Color border() {
     return widget._index % 2 == 0
+
         ? ColorConst.cardFrame1
         : ColorConst.cardFrame2;
   }
 }
-
-// class _CardState extends State<Card> {
-
-//     Widget build(BuildContext context) {
-//       return Container(
-
-//       );
-//     }
-
-// }

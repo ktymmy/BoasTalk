@@ -1,9 +1,14 @@
 import 'dart:io';
+import 'package:boastalk/view/page/home.dart';
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../api/upload_api.dart';
 import '../component/appbar.dart';
 import 'package:image_picker/image_picker.dart';
+import '../navibar.dart';
 import 'detail_page.dart';
+import 'package:path/path.dart' as path;
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -19,6 +24,19 @@ class _PostState extends State<Post> {
   XFile? _image;
   final imagePicker = ImagePicker();
   String heroTag = "";
+
+  final formKey = GlobalKey<FormState>();
+
+  String contents = ''; // テキストを保持する変数
+
+  void initState() {
+    super.initState();
+    bool a = false;
+    // TODO:if文
+    //   if (a) {
+    //     WidgetsBinding.instance!.addPostFrameCallback((_) => _time());
+    //   }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,12 +107,21 @@ class _PostState extends State<Post> {
             child: SizedBox(
               height: height * 0.2,
               width: width * 0.8,
-              child: TextField(
-                keyboardType: TextInputType.multiline, // 複数行入力できるようにする
-                maxLines: null,
-                maxLength: 200,
-                decoration: InputDecoration(
-                    border: InputBorder.none, hintText: 'テキストを入力'),
+              child: Form(
+                key: formKey,
+                child: TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      contents = value;
+                    });
+                  },
+                  validator: _validateName,
+                  keyboardType: TextInputType.multiline, // 複数行入力できるようにする
+                  maxLines: null,
+                  maxLength: 200,
+                  decoration: InputDecoration(
+                      border: InputBorder.none, hintText: 'テキストを入力'),
+                ),
               ),
             ),
           ),
@@ -145,7 +172,16 @@ class _PostState extends State<Post> {
   Widget _sendIcon() {
     return IconButton(
       onPressed: () {
-        // TODO送信時の処理
+        // 文章が入力されているか判別するif
+        if (formKey.currentState!.validate()) {
+          int userID = 3; // TODO:ユーザーIDを取ってくる
+          String imagePath = _image!.path;
+          postDataToServer(imagePath, contents, userID);
+        }
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Navigation()),
+          (route) => false,
+        );
       },
       icon: Icon(
         Icons.send,
@@ -164,7 +200,7 @@ class _PostState extends State<Post> {
         context: context,
         builder: (context) => AlertDialog(
               insetPadding: EdgeInsets.fromLTRB(
-                  width * 0.05, height * 0.35, width * 0.05, height * 0.35),
+                  width * 0.05, height * 0.2, width * 0.05, height * 0.2),
               backgroundColor: ColorConst.base,
               title: Text(
                 "写真のアップロード方法を\n選択してください",
@@ -174,72 +210,115 @@ class _PostState extends State<Post> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        getImageFromCamera(); // 画像を取得する関数を呼び出す
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: ColorConst.main, width: 5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.photo_camera,
+                            color: ColorConst.icon,
+                            size: 28.0,
+                          ),
+                          SizedBox(
+                            width: 50,
+                            height: 40,
+                          ),
+                          Text(
+                            "カメラ",
+                            style: TextStyle(
+                                color: Colors.black, fontSize: fontSize),
+                          ),
+                        ],
+                      ),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        getImageFromGarally(); // 画像を取得する関数を呼び出す
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: ColorConst.main, width: 5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add_photo_alternate,
+                            color: ColorConst.icon,
+                            size: 28.0,
+                          ),
+                          SizedBox(
+                            width: 40,
+                            height: 40,
+                          ),
+                          Text(
+                            "ギャラリー",
+                            style: TextStyle(
+                                color: Colors.black, fontSize: fontSize),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ));
+  }
 
-              // contentPadding: EdgeInsets.symmetric(
-              //     horizontal: 20, vertical: 10), // 必要に応じてパディングを調整
-
+  _time() {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final double fontSize = 15;
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+              insetPadding: EdgeInsets.fromLTRB(
+                  width * 0.05, height * 0.28, width * 0.05, height * 0.28),
+              backgroundColor: ColorConst.base,
+              title: Text(
+                //TODO:時間の表示
+                "次の投稿ができるまで\nあと 59 : 31",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: fontSize),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
               content: Column(
                 children: <Widget>[
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImageFromCamera(); // 画像を取得する関数を呼び出す
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: ColorConst.main, width: 5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.photo_camera,
-                          color: ColorConst.icon,
-                          size: 28.0,
-                        ),
-                        SizedBox(
-                          width: 50,
-                          height: 40,
-                        ),
-                        Text(
-                          "カメラ",
-                          style: TextStyle(
-                              color: Colors.black, fontSize: fontSize),
-                        ),
-                      ],
-                    ),
+                  SvgPicture.asset(
+                    // TODO:画像表示
+                    'assets/flower/5.svg',
+                    width: width * 0.2,
+                    height: height * 0.2,
                   ),
-                  OutlinedButton(
+                  TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
-                      getImageFromGarally(); // 画像を取得する関数を呼び出す
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Navigation()),
+                      );
                     },
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: ColorConst.main, width: 5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
+                    child: Text(
+                      "戻る",
+                      style: TextStyle(color: Colors.black),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.add_photo_alternate,
-                          color: ColorConst.icon,
-                          size: 28.0,
-                        ),
-                        SizedBox(
-                          width: 40,
-                          height: 40,
-                        ),
-                        Text(
-                          "ギャラリー",
-                          style: TextStyle(
-                              color: Colors.black, fontSize: fontSize),
-                        ),
-                      ],
-                    ),
-                  ),
+                  )
                 ],
               ),
             ));
@@ -290,4 +369,12 @@ class _PostState extends State<Post> {
         ),
         child: child);
   }
+}
+
+String? _validateName(String? value) {
+  if (value == null || value.isEmpty) {
+    // TODO:文章考える
+    return '入力してください。';
+  }
+  return null;
 }

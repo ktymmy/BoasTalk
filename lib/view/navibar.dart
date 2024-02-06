@@ -9,6 +9,9 @@ import './page/home.dart';
 import './page/mypage.dart';
 import './page/post.dart';
 
+//testPage
+// import '../testdata/testpage/test_home.dart';
+
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
 
@@ -18,7 +21,7 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   static const _pages = [Post(), Home(), Mypage()]; //navibarの位置と紐づけられている
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -39,21 +42,21 @@ class _NavigationState extends State<Navigation> {
         borderColor: ColorConst.black,
         tabs: [
           MoltenTab(
-              icon: Icon(
+              icon: const Icon(
                 Icons.add_comment_outlined,
                 size: 40,
               ),
               selectedColor: ColorConst.icon,
               unselectedColor: ColorConst.unselecticon),
           MoltenTab(
-              icon: Icon(
+              icon: const Icon(
                 Icons.home,
                 size: 40,
               ),
               selectedColor: ColorConst.icon,
               unselectedColor: ColorConst.unselecticon),
           MoltenTab(
-              icon: Icon(
+              icon: const Icon(
                 Icons.person,
                 size: 40,
               ),

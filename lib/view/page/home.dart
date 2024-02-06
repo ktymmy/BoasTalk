@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 
 //constant
@@ -9,12 +8,11 @@ import '../component/card.dart';
 import '../component/appbar.dart';
 //model
 import 'package:boastalk/model/post_model.dart';
-//controller
-import 'package:boastalk/controller/post_controller.dart';
-
 //page
 import '../changeover/moment.dart';
 import '../changeover/random.dart';
+//api
+import '../../api/post_api.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -24,30 +22,49 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String currentIcon = 'page/MomentIcon.svg'; //現在のアイコン定義
+  String currentIcon = 'assets/page/MomentIcon.svg'; //現在のアイコン定義
 
-  List<PostModel> _posts = [];
+  List<PostModel> posts = [];
+  final List<ExpansionTileController> _controllers = [];
 
   // 各ExpansionTileの状態を管理するリスト
-  List<bool> _isExpandedList = [];
+
+  List<bool> isExpandedList = [];
 
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
-      currentIcon == 'page/MomentIcon.svg'
-          ? currentIcon = 'page/RandomIcon.svg'
-          : currentIcon = 'page/MomentIcon.svg';
+      //実機で実行時 assets/必ず前に付ける
+      currentIcon == 'assets/page/MomentIcon.svg'
+          ? currentIcon = 'assets/page/RandomIcon.svg'
+          : currentIcon = 'assets/page/MomentIcon.svg';
     });
   }
 
   //データをリスト形式でとってきて、ランダムに並び替え
   void initState() {
     super.initState();
-    _posts = PostController().post;
-    _posts.shuffle();
+    posts.shuffle();
+    fetchData();
 
     // 各ExpansionTileの状態を初期化
-    _isExpandedList = List.generate(_posts.length, (index) => false);
+    isExpandedList = List.generate(posts.length, (index) => false);
+  }
+
+  Future<void> fetchData() async {
+    final response = await getPost(1);
+    final List<PostModel> fetchedPosts =
+        response.map((data) => PostModel.fromJson(data)).toList();
+
+    setState(() {
+      posts = fetchedPosts;
+    });
+    posts.shuffle();
+
+    //投稿の数だけcontrollerを作成
+    for (int i = 0; i < posts.length; i++) {
+      _controllers.add(ExpansionTileController());
+    }
   }
 
   @override
@@ -58,33 +75,38 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
         onPressed: () async {
-          if (currentIcon == 'page/MomentIcon.svg') {
+          if (currentIcon == 'assets/page/MomentIcon.svg') {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Moment()));
-          } else if (currentIcon == 'page/RandomIcon.svg') {
+          } else if (currentIcon == 'assets/page/RandomIcon.svg') {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Random()));
           }
-
-          // 1秒待機、データ並び替え、アイコン切り替え、home.dartに戻る
-          await Future.delayed(Duration(seconds: 1));
-
-          if (currentIcon == 'page/MomentIcon.svg') {
-            _posts.sort((a, b) => b.date.compareTo(a.date));
-          } else if (currentIcon == 'page/RandomIcon.svg') {
-            _posts.shuffle();
+          await Future.delayed(Duration(seconds: 1)); // 1秒待機
+          //シャッフル
+          if (currentIcon == 'assets/page/MomentIcon.svg') {
+            posts.sort((a, b) => b.postDate.compareTo(a.postDate));
+          } else if (currentIcon == 'assets/page/RandomIcon.svg') {
+            posts.shuffle();
           }
-
           toggleIcon();
 
           Navigator.pop(context);
+
+          for (var controller in _controllers) {
+            controller.collapse();
+          }
         },
         child: (SvgPicture.asset(currentIcon)),
       ),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          // データを更新する処理をここに追加
+          await fetchData();
+        },
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+          height: MediaQuery.of(context).size.height,
           child: _card(),
         ),
       ),
@@ -93,26 +115,23 @@ class _HomeState extends State<Home> {
 
   //CardComponent
   Widget _card() {
-    return Column(
-      children: [
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: _posts.length,
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 5),
-                CardComponent(
-                  post: _posts[index],
-                  onTap: () {},
-                  index: index,
-                ),
-              ],
-            );
-          },
-        ),
-      ],
+    return ListView.builder(
+      shrinkWrap: false,
+      itemCount: posts.length,
+      itemBuilder: (context, index) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CardComponent(
+              post: posts[index],
+              controllers: _controllers,
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      },
     );
   }
 }

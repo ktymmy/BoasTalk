@@ -18,8 +18,7 @@ class AppbarComponent extends StatelessWidget implements PreferredSizeWidget {
         padding: EdgeInsets.only(left: 24.0, top: 16.0),
         child: SvgPicture.asset('assets/images/BoasTalk.svg'),
 
-        //TODO:webでrunする場合
-        //child: SvgPicture.asset('images/BoasTalk.svg'),
+        //webでrunする場合
       ),
     );
   }
