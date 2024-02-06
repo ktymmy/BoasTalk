@@ -45,6 +45,7 @@ class _MypageState extends State<Mypage> {
   }
 
   final List<ExpansionTileController> _controllers = [];
+
   @override
   void initState() {
     super.initState();
@@ -118,8 +119,9 @@ class _MypageState extends State<Mypage> {
                         ),
                         Container(
                           child: IconButton(
-                            onPressed: () {
-                              Navigator.push(
+                            onPressed: () async {
+                              await Navigator.push(
+
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CalendarWidge()),
@@ -227,4 +229,5 @@ class _MypageState extends State<Mypage> {
       },
     );
   }
+
 }

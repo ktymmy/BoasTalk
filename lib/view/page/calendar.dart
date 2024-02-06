@@ -16,6 +16,9 @@ class _CalendarWidgeState extends State<CalendarWidge>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
+  String _postheader = "";
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay; //選択されてる日
   @override
   void initState() {
     super.initState();
@@ -30,9 +33,7 @@ class _CalendarWidgeState extends State<CalendarWidge>
 
   @override
   Widget build(BuildContext context) {
-    DateTime _focusedDay = DateTime.now();
-    DateTime? _selectedDay; //選択されてる日
-
+    
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
@@ -49,7 +50,7 @@ class _CalendarWidgeState extends State<CalendarWidge>
             ),
             backgroundColor: ColorConst.base,
             body: Column(
-              children: [
+              children: <Widget>[
                 Center(
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.4,
@@ -64,6 +65,8 @@ class _CalendarWidgeState extends State<CalendarWidge>
                         firstDay: DateTime.utc(2023, 1, 1),
                         lastDay: DateTime.utc(2050, 12, 31),
 
+                        focusedDay: _focusedDay,
+
                         shouldFillViewport: true, //カレンダーの大きさを変える
                         locale: 'ja_JP', //カレンダーを日本語に変換
 
@@ -73,6 +76,13 @@ class _CalendarWidgeState extends State<CalendarWidge>
                             color: ColorConst.main,
                             shape: BoxShape.circle,
                           ),
+                          // defaultTextStyle:TextStyle(color: Colors.blue),
+                          weekendTextStyle:TextStyle(color: Colors.pink),
+                          selectedDecoration: BoxDecoration(
+                            color: Color.fromRGBO(244, 143, 177, 1),
+                            shape: BoxShape.circle,
+                          ),
+                          weekNumberTextStyle: TextStyle(color: Colors.lightBlue)
                         ),
 
                         headerStyle: const HeaderStyle(
@@ -85,28 +95,46 @@ class _CalendarWidgeState extends State<CalendarWidge>
                           return isSameDay(_selectedDay, day);
                         },
 
+                        onPageChanged: (focusedDay) {
+                          print(_focusedDay);
+                          _focusedDay = focusedDay;
+                        },
+
                         // 日付が選択されたときの処理
-                        onDaySelected: (selected, focused) {
-                          if (!isSameDay(_selectedDay, selected)) {
+                        onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+                          if (!isSameDay(_selectedDay, selectedDay)) {
                             setState(() {
-                              _selectedDay = selected;
-                              _focusedDay = focused;
+                              _selectedDay = selectedDay;
+                              _focusedDay = focusedDay;
+
+                              _postheader = showDate(_selectedDay);
                             });
-                            Navigator.pop(context, _selectedDay); // 日付をpopで戻す
+                          }
+
+                          if(isSameDay(_selectedDay, selectedDay)){
+                            print("true");
                           }
                         },
-                        focusedDay: _focusedDay,
 
                       ),
+
                     ),
                   ),
                 ),
+                Container(
+                  child: Column(
+                    children: [
+                      Text(_postheader),
+                    ],
+                  ),
+                ),
+
                 const SizedBox(
                   height: 10,
                 ),
                 const SingleChildScrollView(
                     // child: ListComponent(),
-                    ),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -131,4 +159,19 @@ class _CalendarWidgeState extends State<CalendarWidge>
       ),
     );
   }
+
+  String showDate(DateTime? selectDate) {
+
+    if(selectDate == null){
+      _postheader = "null";
+    }else{
+      String _year = selectDate.year.toString();
+      String _month = selectDate.month.toString();
+      String _day = selectDate.day.toString();
+
+      _postheader = (_year + "年" + _month + "月" + _day + "日の投稿");
+    }
+    return _postheader;
+  }
+
 }
