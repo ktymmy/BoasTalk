@@ -91,8 +91,6 @@ class _CardComponentState extends State<CardComponent> {
         childrenPadding:
             EdgeInsets.symmetric(vertical: 10), //cardを開いた時の写真のpadding
 
-        //childrenPadding: EdgeInsets.symmetric(vertical: 10),  //上下方向に10pxパディング
-
         children: <Widget>[
           SizedBox(
             height: height * 0.3,

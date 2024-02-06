@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
 
   List<PostModel> posts = [];
   final List<ExpansionTileController> _controllers = [];
+  ScrollController _scrollController = ScrollController();
 
   // 各ExpansionTileの状態を管理するリスト
   List<bool> isExpandedList = [];
@@ -106,6 +107,14 @@ class _HomeState extends State<Home> {
           for (var controller in _controllers) {
             controller.collapse();
           }
+
+          //ページの位置を0,0（一番上）にする
+          _scrollController.animateTo(
+            0.0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeOut,
+          );
+
         },
         child: (SvgPicture.asset(currentIcon)),
       ),
@@ -120,6 +129,7 @@ class _HomeState extends State<Home> {
   //CardComponent
   Widget _card() {
     return ListView.builder(
+      controller: _scrollController,
       shrinkWrap: true,
       // physics: NeverScrollableScrollPhysics(),
       itemCount: posts.length,
