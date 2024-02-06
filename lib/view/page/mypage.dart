@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
 //constant
 import 'package:boastalk/constant/color_Const.dart';
+import '../../constant/String_Const.dart';
 //component
 import '../component/appbar.dart';
 import '../component/card.dart';
@@ -26,6 +27,8 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
   List<PostModel> posts = [];
   List<UsersModel> _users = [];
+  final _displayKey = GlobalKey<FormState>();
+  String _display = "";
 
 //値を取得する関数
   Future<void> fetchData() async {
@@ -39,16 +42,11 @@ class _MypageState extends State<Mypage> {
   }
 
   final List<ExpansionTileController> _controllers = [];
-
-  DateTime _selectedDate = DateTime.now();
-
   @override
   void initState() {
     super.initState();
     listState();
-
     fetchData();
-
     //投稿の数だけcontrollerを作成
     for (int i = 0; i < posts.length; i++) {
       _controllers.add(ExpansionTileController());
@@ -98,13 +96,6 @@ class _MypageState extends State<Mypage> {
             Container(
                 height: height * 0.59,
                 width: width * 0.85,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: ColorConst.main,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
                 child: Column(
                   children: [
                     SizedBox(
@@ -115,8 +106,8 @@ class _MypageState extends State<Mypage> {
                         SizedBox(
                           width: width * 0.3,
                         ),
-                        Text(
-                          showDate(_selectedDate), //選択された日付を表示
+                        const Text(
+                          '今日の投稿',
                           style: TextStyle(color: ColorConst.main),
                         ),
                         SizedBox(
@@ -124,18 +115,12 @@ class _MypageState extends State<Mypage> {
                         ),
                         Container(
                           child: IconButton(
-                            onPressed: () async {
-                              DateTime result = await Navigator.push(
+                            onPressed: () {
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CalendarWidge()),
                               );
-
-                              if (result != null) {
-                                setState(() {
-                                  _selectedDate = result;
-                                });
-                              }
                             },
                             icon: const Icon(
                               Icons.calendar_month_outlined,
@@ -167,7 +152,6 @@ class _MypageState extends State<Mypage> {
     final fontBold = FontWeight.bold;
 
     return Container(
-      // height: height * 0.25,
       width: width * 0.7,
       child: Column(
         children: [
@@ -200,6 +184,7 @@ class _MypageState extends State<Mypage> {
     );
   }
 
+  bool tap = false;
   Widget _card() {
     return ListView.builder(
       shrinkWrap: false,
@@ -208,10 +193,27 @@ class _MypageState extends State<Mypage> {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(width: 10),
-            CardComponent(
-              post: posts[index],
-              controllers: _controllers,
+            Slidable(
+              key: UniqueKey(),
+              endActionPane: ActionPane(motion: ScrollMotion(), children: [
+                SlidableAction(
+                  onPressed: (context) {
+                    setState(() {
+                      PostModel updatedPost = posts[index].copyWithDisplay(1);
+
+                      posts[index] = updatedPost;
+                    });
+                  },
+                  backgroundColor: Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: '削除',
+                ),
+              ]),
+              child: CardComponent(
+                post: posts[index],
+                controllers: _controllers,
+              ),
             ),
             SizedBox(
               height: 10,
@@ -221,15 +223,4 @@ class _MypageState extends State<Mypage> {
       },
     );
   }
-
-  showDate(DateTime selectDate) {
-    String year = selectDate.year.toString();
-    String month = selectDate.month.toString();
-    String day = selectDate.day.toString();
-
-    String header = year + "年" + month + "月" + day + "日の投稿";
-
-    return header;
-  }
-
 }

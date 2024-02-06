@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 
 //constant
@@ -9,11 +8,10 @@ import '../component/card.dart';
 import '../component/appbar.dart';
 //model
 import 'package:boastalk/model/post_model.dart';
-
 //page
 import '../changeover/moment.dart';
 import '../changeover/random.dart';
-
+//api
 import '../../api/post_api.dart';
 
 class Home extends StatefulWidget {
@@ -35,10 +33,6 @@ class _HomeState extends State<Home> {
   void toggleIcon() {
     //ボタン画像切替メソッド
     setState(() {
-      // currentIcon == 'page/MomentIcon.svg'
-      //     ? currentIcon = 'page/RandomIcon.svg'
-      //     : currentIcon = 'page/MomentIcon.svg';
-
       //実機で実行時 assets/必ず前に付ける
       currentIcon == 'assets/page/MomentIcon.svg'
           ? currentIcon = 'assets/page/RandomIcon.svg'
@@ -121,18 +115,19 @@ class _HomeState extends State<Home> {
   //CardComponent
   Widget _card() {
     return ListView.builder(
-      shrinkWrap: true,
-      // physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: false,
       itemCount: posts.length,
       itemBuilder: (context, index) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 5),
             CardComponent(
               post: posts[index],
               controllers: _controllers,
             ),
+            SizedBox(
+              height: 10,
+            )
           ],
         );
       },

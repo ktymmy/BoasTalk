@@ -27,14 +27,15 @@ Future<List<dynamic>> getPost(int id) async {
   if (response.statusCode == 200) {
     responseData = json.decode(response.body);
     List<Map<String, dynamic>> result = [];
-
     for (int i = 0; i < responseData.length; i++) {
       Map<String, dynamic> item = {};
+
       item['ID'] = responseData[i]['ID'];
       item['USER_ID'] = responseData[i]['USER_ID'];
       item['IMAGE'] = responseData[i]['IMAGE'];
       item['CONTENTS'] = responseData[i]['CONTENTS'];
       item['POST_DATE'] = responseData[i]['POST_DATE'];
+      item['DISPLAY'] = responseData[i]['DISPLAY'];
 
       print(item);
 
@@ -42,7 +43,7 @@ Future<List<dynamic>> getPost(int id) async {
     }
     return result;
   } else {
-    print('レスポンス1: ${responseData}');
+    print('その他: ${responseData}');
     return responseData;
   }
 }
