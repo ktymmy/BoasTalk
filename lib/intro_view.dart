@@ -41,13 +41,13 @@ class FlutterOverboardPage extends StatelessWidget {
   final pages = [
     PageModel(
         color: const Color(0xFF95cedd),
-        imageAssetPath: '../assets/images/screen1.png',
+        imageAssetPath: 'assets/images/screen1.png',
         title: '文字を表示できます',
         body: '細かい説明をbodyに指定して書くことが出来ます',
         doAnimateImage: true),
     PageModel(
         color: const Color(0xFF9B90BC),
-        imageAssetPath: '../assets/images/screen2.png',
+        imageAssetPath: 'assets/images/screen2.png',
         title: '左右のスワイプ',
         body: 'NEXTを押さなくても左右にスワイプすることで画面の切替が出来ます',
         doAnimateImage: true),
