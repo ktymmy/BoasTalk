@@ -212,6 +212,7 @@ class _MypageState extends State<Mypage> {
               child: CardComponent(
                 post: posts[index],
                 controllers: _controllers,
+                index: index,
               ),
             ),
             SizedBox(
