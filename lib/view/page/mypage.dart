@@ -1,6 +1,5 @@
 import 'package:boastalk/view/page/home.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 //constant
@@ -121,7 +120,6 @@ class _MypageState extends State<Mypage> {
                           child: IconButton(
                             onPressed: () async {
                               await Navigator.push(
-
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CalendarWidge()),
@@ -191,7 +189,6 @@ class _MypageState extends State<Mypage> {
 
   bool tap = false;
   Widget _card() {
-
     return ListView.builder(
       shrinkWrap: false,
       itemCount: posts.length,
@@ -204,11 +201,7 @@ class _MypageState extends State<Mypage> {
               endActionPane: ActionPane(motion: ScrollMotion(), children: [
                 SlidableAction(
                   onPressed: (context) {
-                    setState(() {
-                      PostModel updatedPost = posts[index].copyWithDisplay(1);
-
-                      posts[index] = updatedPost;
-                    });
+                    setState(() {});
                   },
                   backgroundColor: Color(0xFFFE4A49),
                   foregroundColor: Colors.white,
@@ -229,5 +222,4 @@ class _MypageState extends State<Mypage> {
       },
     );
   }
-
 }
