@@ -52,29 +52,6 @@ class _CardComponentState extends State<CardComponent> {
         constraints: BoxConstraints(
           minHeight: height * 0.12,
         ),
-//         onExpansionChanged: (bool expanded) {
-//           setState(() {
-//             _isExpanded = expanded;
-//           });
-//         },
-//         collapsedBackgroundColor: ColorConst.cardBackground, //cardを開く前の色
-//         backgroundColor: ColorConst.cardBackground, //cardを開いた後の色
-//         initiallyExpanded: false, //false = 閉じられた状態で表示
-//         title: Text(
-//           widget.post.contents, //["CONTENTS"]
-//           overflow: TextOverflow.ellipsis, //文字がoverflowしたら『...』に置き換える
-//           maxLines: _isExpanded ? 20 : 3, //開いているとき20行、閉じているとき3行
-//           style: const TextStyle(fontWeight: FontWeight.normal),
-//         ),
-
-//         childrenPadding:
-//             EdgeInsets.symmetric(vertical: 10), //cardを開いた時の写真のpadding
-
-//         children: <Widget>[
-//           SizedBox(
-//             height: height * 0.3,
-//             width: width * 0.7,
-//             child: imgShow,
         child: ExpansionTile(
           //XXX:Statelessじゃないと動かないので見直す必要がある
           // controller: _controller[widget.post.id], //各カードにcontrollerを割り当て
@@ -116,6 +93,9 @@ class _CardComponentState extends State<CardComponent> {
 
           childrenPadding:
               EdgeInsets.symmetric(vertical: 10), //cardを開いた時の写真のpadding
+
+          //childrenPadding: EdgeInsets.symmetric(vertical: 10),  //上下方向に10pxパディング
+
           children: <Widget>[
             widget.post.image != null
                 ? SizedBox(
@@ -136,11 +116,9 @@ class _CardComponentState extends State<CardComponent> {
     );
   }
 
-  // Color border() {
-  //   final int _index;
-
-  //   return  % 2 == 0
-  //       ? ColorConst.cardFrame1
-  //       : ColorConst.cardFrame2;
-  // }
+  Color border() {
+    return widget.post.id % 2 == 0
+        ? ColorConst.cardFrame1
+        : ColorConst.cardFrame2;
+  }
 }
