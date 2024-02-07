@@ -4,6 +4,13 @@ import 'package:table_calendar/table_calendar.dart'; //カレンダー
 //import const
 import '../../constant/color_Const.dart';
 //import component
+import '../component/card.dart';
+
+//api
+import '../../api/post_api.dart';
+
+//model
+import 'package:boastalk/model/post_model.dart';
 
 class CalendarWidge extends StatefulWidget {
   const CalendarWidge({super.key});
@@ -19,9 +26,15 @@ class _CalendarWidgeState extends State<CalendarWidge>
   String _postheader = "";
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay; //選択されてる日
+
+  List<PostModel> posts = [];
+  final List<ExpansionTileController> _controllers = [];
+
   @override
   void initState() {
     super.initState();
+    fetchData();
+
     _controller = AnimationController(vsync: this);
   }
 
@@ -31,15 +44,31 @@ class _CalendarWidgeState extends State<CalendarWidge>
     super.dispose();
   }
 
+  Future<void> fetchData() async {
+    final response = await getPost(1);
+    final List<PostModel> fetchedPosts =
+        response.map((data) => PostModel.fromJson(data)).toList();
+
+    setState(() {
+      posts = fetchedPosts;
+    });
+    posts.shuffle();
+
+    //投稿の数だけcontrollerを作成
+    for (int i = 0; i < posts.length; i++) {
+      _controllers.add(ExpansionTileController());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               elevation: 0,
               backgroundColor: ColorConst.base,
-              title: const Center(
+              title: const Align(
                 child: Text(
                   "過去の投稿",
                   style: TextStyle(
@@ -72,18 +101,18 @@ class _CalendarWidgeState extends State<CalendarWidge>
 
                         //today maker color
                         calendarStyle: const CalendarStyle(
-                          todayDecoration: BoxDecoration(
-                            color: ColorConst.main,
-                            shape: BoxShape.circle,
-                          ),
-                          // defaultTextStyle:TextStyle(color: Colors.blue),
-                          weekendTextStyle:TextStyle(color: Colors.pink),
-                          selectedDecoration: BoxDecoration(
-                            color: Color.fromRGBO(244, 143, 177, 1),
-                            shape: BoxShape.circle,
-                          ),
-                          weekNumberTextStyle: TextStyle(color: Colors.lightBlue)
-                        ),
+                            todayDecoration: BoxDecoration(
+                              color: ColorConst.main,
+                              shape: BoxShape.circle,
+                            ),
+                            // defaultTextStyle:TextStyle(color: Colors.blue),
+                            weekendTextStyle: TextStyle(color: Colors.pink),
+                            selectedDecoration: BoxDecoration(
+                              color: Color.fromRGBO(244, 143, 177, 1),
+                              shape: BoxShape.circle,
+                            ),
+                            weekNumberTextStyle:
+                                TextStyle(color: Colors.lightBlue)),
 
                         headerStyle: const HeaderStyle(
                           formatButtonVisible: false, //[2week]の表示を消す
@@ -101,7 +130,8 @@ class _CalendarWidgeState extends State<CalendarWidge>
                         },
 
                         // 日付が選択されたときの処理
-                        onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+                        onDaySelected:
+                            (DateTime selectedDay, DateTime focusedDay) {
                           if (!isSameDay(_selectedDay, selectedDay)) {
                             setState(() {
                               _selectedDay = selectedDay;
@@ -111,29 +141,19 @@ class _CalendarWidgeState extends State<CalendarWidge>
                             });
                           }
 
-                          if(isSameDay(_selectedDay, selectedDay)){
+                          if (isSameDay(_selectedDay, selectedDay)) {
                             print("true");
                           }
                         },
-
                       ),
-
                     ),
                   ),
                 ),
                 Container(
-                  child: Column(
-                    children: [
-                      Text(_postheader),
-                    ],
-                  ),
+                  child: Text(_postheader),
                 ),
-
                 const SizedBox(
                   height: 10,
-                ),
-                const SingleChildScrollView(
-                    // child: ListComponent(),
                 ),
                 const SizedBox(
                   height: 10,
@@ -142,29 +162,10 @@ class _CalendarWidgeState extends State<CalendarWidge>
             )));
   }
 
-  Widget bottomsheet() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.5,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: ColorConst.base,
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.4,
-            // child: TextField(decoration: ,),
-          )
-        ],
-      ),
-    );
-  }
-
   String showDate(DateTime? selectDate) {
-
-    if(selectDate == null){
+    if (selectDate == null) {
       _postheader = "null";
-    }else{
+    } else {
       String _year = selectDate.year.toString();
       String _month = selectDate.month.toString();
       String _day = selectDate.day.toString();
@@ -174,4 +175,24 @@ class _CalendarWidgeState extends State<CalendarWidge>
     return _postheader;
   }
 
+  Widget _card() {
+    return ListView.builder(
+      shrinkWrap: false,
+      itemCount: posts.length,
+      itemBuilder: (context, index) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CardComponent(
+              post: posts[index],
+              controllers: _controllers,
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      },
+    );
+  }
 }

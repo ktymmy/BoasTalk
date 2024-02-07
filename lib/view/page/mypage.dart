@@ -1,7 +1,6 @@
-import 'package:boastalk/view/page/home.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
 //constant
 import 'package:boastalk/constant/color_Const.dart';
 import '../../constant/String_Const.dart';
@@ -18,6 +17,7 @@ import '../page/calendar.dart';
 import '../login/signup.dart';
 //api
 import '../../api/post_api.dart';
+import '../../api/delete_api.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
@@ -29,8 +29,6 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
   List<PostModel> posts = [];
   List<UsersModel> _users = [];
-  final _displayKey = GlobalKey<FormState>();
-  String _display = "";
 
 //値を取得する関数
   Future<void> fetchData() async {
@@ -134,10 +132,16 @@ class _MypageState extends State<Mypage> {
                         )
                       ],
                     ),
-                    Container(
-                      height: height * 0.5,
-                      width: width * 0.8,
-                      child: _card(),
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        // データを更新する処理をここに追加
+                        await fetchData();
+                      },
+                      child: Container(
+                        height: height * 0.5,
+                        width: width * 0.8,
+                        child: _card(),
+                      ),
                     ),
                   ],
                 )),
@@ -188,6 +192,8 @@ class _MypageState extends State<Mypage> {
   }
 
   bool tap = false;
+  final _success = GlobalKey<FormState>();
+
   Widget _card() {
     return ListView.builder(
       shrinkWrap: false,
@@ -199,14 +205,19 @@ class _MypageState extends State<Mypage> {
             Slidable(
               key: UniqueKey(),
               endActionPane: ActionPane(motion: ScrollMotion(), children: [
-                SlidableAction(
-                  onPressed: (context) {
-                    setState(() {});
-                  },
-                  backgroundColor: Color(0xFFFE4A49),
-                  foregroundColor: Colors.white,
-                  icon: Icons.delete,
-                  label: '削除',
+                Container(
+                  child: SlidableAction(
+                    onPressed: (context) async {
+                      print(posts[index].id);
+                      final success =
+                          await sendDeleteRequest(posts[index].id, 1);
+                    },
+                    backgroundColor: Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    borderRadius: BorderRadius.circular(200),
+                    label: '削除',
+                  ),
                 ),
               ]),
               child: CardComponent(
