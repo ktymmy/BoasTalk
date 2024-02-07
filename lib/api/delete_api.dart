@@ -1,32 +1,28 @@
 import 'package:http/http.dart' as http;
 
-Future<void> postDataToServer(
-    String firstName, String lastName, String mail, String pass) async {
+Future<void> sendDeleteRequest(int id, int delete) async {
   try {
     // Server URL
     final Uri url =
-        Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/posts.php');
+        Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/delete.php');
 
-    Map<String, String> formData = {
-      'firstName': firstName,
-      'lastName': lastName,
-      'mail': mail,
-      'pass': pass,
+    // Create form data
+    final Map<String, String> formData = {
+      'id': id.toString(),
+      'delete': delete.toString(),
     };
-    print(formData);
 
-    var response = await http.post(
+    // Send HTTP POST request
+    final response = await http.post(
       url,
       body: formData,
     );
 
-    print('Response status code: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
+    print(formData);
     if (response.statusCode == 200) {
-      print('完了.');
+      print('Request successful.');
     } else {
-      print('データ送信失敗: ${response.statusCode}');
+      print('Request failed with status: ${response.statusCode}');
     }
   } catch (error) {
     print('Error: $error');

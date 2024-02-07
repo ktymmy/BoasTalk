@@ -1,3 +1,4 @@
+//cardのデータを取得するAPI
 import 'dart:convert';
 
 import 'package:flutter/material.dart';

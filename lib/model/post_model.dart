@@ -6,7 +6,7 @@ class PostModel {
   final String image;
   final String contents;
   final DateTime postDate;
-  final int display;
+  int display;
 
   PostModel({
     required this.id,
