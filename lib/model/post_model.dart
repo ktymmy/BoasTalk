@@ -5,7 +5,7 @@ class PostModel {
   final int userId;
   final String image;
   final String contents;
-  final DateTime postDate;
+  DateTime postDate;
   int display;
 
   PostModel({

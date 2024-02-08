@@ -5,7 +5,8 @@ Future<void> postDataToServer(
     String firstName, String lastName, String mail, String pass) async {
   try {
     // Server URL
-    final Uri url = Uri.parse('');
+    final Uri url =
+        Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/user.php');
 
     Map<String, String> formData = {
       'firstName': firstName,

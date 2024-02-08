@@ -53,10 +53,10 @@ class _MyWidgetState extends State<Signup> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConst.base,
-        body: Column(
+    return Scaffold(
+      backgroundColor: ColorConst.base,
+      body: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
