@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:intro_views_flutter/intro_views_flutter.dart';
-import './view/page/home.dart';
 import 'package:flutter_overboard/flutter_overboard.dart';
 import './view/navibar.dart';
 
@@ -8,31 +6,14 @@ class FlutterOverboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('FlutterOverboardPage'),
-      // ),
       body: OverBoard(
         pages: pages,
         showBullets: true,
-        // skipCallback: () {
-        //   // when user select SKIP
-        //   // Navigator.pop(context);
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => Home()),
-        //   );
-        // },
         finishCallback: () {
-          // when user select NEXT
-          // Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Navigation()),
           );
-          //  Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => Home()),
-          // );
         },
       ),
     );
