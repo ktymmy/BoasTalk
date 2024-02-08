@@ -186,6 +186,7 @@ class _CalendarWidgeState extends State<CalendarWidge>
             CardComponent(
               post: posts[index],
               controllers: _controllers,
+              index: index,
             ),
             SizedBox(
               height: 10,
