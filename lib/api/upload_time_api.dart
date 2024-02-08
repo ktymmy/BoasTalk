@@ -1,10 +1,10 @@
+//POSTのTIMEを測るAPI?
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<int> uploadTime(int userId) async {
   // urlをgitにあげない
-  var url =
-      Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/upload_time.php');
+  var url = Uri.parse('');
 
   var data = {'user_id': userId.toString()};
 

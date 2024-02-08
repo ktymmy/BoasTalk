@@ -1,5 +1,5 @@
 //新規登録画面
-import 'package:boastalk/api/signup_api.dart';
+import 'package:boastalk/api/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; //svg
 

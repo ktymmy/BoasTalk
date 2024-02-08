@@ -1,10 +1,11 @@
+//POSTをDELETEするAPI
+
 import 'package:http/http.dart' as http;
 
 Future<void> sendDeleteRequest(int id, int delete) async {
   try {
     // Server URL
-    final Uri url =
-        Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/delete.php');
+    final Uri url = Uri.parse('');
 
     // Create form data
     final Map<String, String> formData = {

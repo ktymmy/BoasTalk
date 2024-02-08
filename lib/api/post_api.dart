@@ -16,7 +16,7 @@ apiClient() async {
 
 Future<List<dynamic>> getPost(int id) async {
   final response = await http.get(
-    Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/posts.php'),
+    Uri.parse(''),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
