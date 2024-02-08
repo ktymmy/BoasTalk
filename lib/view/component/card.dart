@@ -6,14 +6,15 @@ import '../../model/post_model.dart';
 
 class CardComponent extends StatefulWidget {
   final PostModel post;
-
+  final int index;
   final List<ExpansionTileController> _controllers;
 
-  const CardComponent(
-      {super.key,
-      required PostModel post,
-      required List<ExpansionTileController> controllers})
-      : post = post,
+  const CardComponent({
+    super.key,
+    required PostModel post,
+    required List<ExpansionTileController> controllers,
+    required this.index,
+  })  : post = post,
         _controllers = controllers;
 
   @override
@@ -60,14 +61,14 @@ class _CardComponentState extends State<CardComponent> {
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(
               width: 1,
-              color: ColorConst.cardFrame2,
+              color: border(),
             ),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: const BorderSide(
+            side: BorderSide(
               width: 1,
-              color: ColorConst.cardFrame2,
+              color: border(),
             ),
           ),
           onExpansionChanged: (bool expanded) {
@@ -117,7 +118,7 @@ class _CardComponentState extends State<CardComponent> {
   }
 
   Color border() {
-    return widget.post.id % 2 == 0
+    return widget.index % 2 == 0
         ? ColorConst.cardFrame1
         : ColorConst.cardFrame2;
   }

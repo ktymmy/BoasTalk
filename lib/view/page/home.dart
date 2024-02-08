@@ -124,6 +124,7 @@ class _HomeState extends State<Home> {
             CardComponent(
               post: posts[index],
               controllers: _controllers,
+              index: index,
             ),
             SizedBox(
               height: 10,
