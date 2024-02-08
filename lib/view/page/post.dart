@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:boastalk/api/upload_like_api.dart';
 import 'package:flutter/material.dart';
 import 'package:boastalk/constant/color_Const.dart';
+import 'package:boastalk/constant/slander_Const.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../api/upload_api.dart';
 import '../../api/upload_time_api.dart';
@@ -410,8 +411,27 @@ class _PostState extends State<Post> {
 }
 
 String? _validateName(String? value) {
+
+  List<String> patternWords = SlanderConst.wordList;
+  List<String> detectedWords = [];
+
+  // 入力値がNull または空白か検証  
   if (value == null || value.isEmpty) {
     return '入力してください。';
+  }else if(value.indexOf(' ') >= 0 && value.trim() == '') {
+    return '入力欄が空白です。';
   }
+  // 入力値に単語が含まれているか検証
+  for (String word in patternWords) {
+    RegExp regExp = RegExp(word, caseSensitive: false);
+    if (regExp.hasMatch(value)) {
+      detectedWords.add("$word");
+    }
+  }
+
+  if(detectedWords != null && detectedWords.isNotEmpty){
+    return '不適切な単語が含まれているようです。投稿内容を見直してください。' + '$detectedWords';
+  }
+
   return null;
 }
