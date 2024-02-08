@@ -1,12 +1,14 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-//constant
+import '../../api/post_like_api.dart';
+import 'package:flutter_svg/svg.dart';
+// 定数
 import '../../constant/color_Const.dart';
-//model
+// モデル
 import '../../model/post_model.dart';
 
 class CardComponent extends StatefulWidget {
   final PostModel post;
-
   final List<ExpansionTileController> _controllers;
 
   const CardComponent(
@@ -21,9 +23,21 @@ class CardComponent extends StatefulWidget {
 }
 
 class _CardComponentState extends State<CardComponent> {
-  bool _isExpanded = false;
   bool _doubletap = false;
   final List<ExpansionTileController> _controller = [];
+  bool _isExpanded = false;
+  late bool likeFlg;
+  late int likeCount;
+  Timer? timer;
+  int user_id = 44;
+  int post_id = 420;
+
+  @override
+  void initState() {
+    super.initState();
+    likeFlg = false; // 初期のいいね状態
+    likeCount = widget.post.initialLikeCount; // 初期のいいね数
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +48,28 @@ class _CardComponentState extends State<CardComponent> {
       onDoubleTap: () {
         // ダブルタップ時の処理をここに追加
         print('ダブルタップ Post ID: ${widget.post.id}');
-        _doubletap = true;
+        setState(() {
+          post_id = widget.post.id;
+          _doubletap = true;
+          likeFlg = !likeFlg;
+          likeFlg ? likeCount += 1 : likeCount -= 1;
+        });
+        print(user_id);
+        print(post_id);
+        sendLike(user_id, post_id);
+        // print(likeCount);
+        // if (timer != null && timer!.isActive) {
+        //   timer!.cancel();
+        // }
+        // timer = Timer(const Duration(milliseconds: 500), () async {
+        //   if (likeFlg != widget.post.isLiked) {
+        //     // API呼び出しをここで行います
+
+        //     print(user_id);
+        //     print(widget.post.id);
+        //     print(likeCount);
+        //   }
+        // });
       },
       child: Container(
         width: width * 0.9,
@@ -53,7 +88,7 @@ class _CardComponentState extends State<CardComponent> {
           minHeight: height * 0.12,
         ),
         child: ExpansionTile(
-          //XXX:Statelessじゃないと動かないので見直す必要がある
+//XXX:Statelessじゃないと動かないので見直す必要がある
           // controller: _controller[widget.post.id], //各カードにcontrollerを割り当て
 
           collapsedShape: RoundedRectangleBorder(

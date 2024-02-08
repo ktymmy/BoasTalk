@@ -7,6 +7,8 @@ class PostModel {
   final String contents;
   final DateTime postDate;
   int display;
+  final bool isLiked;
+  final int initialLikeCount;
 
   PostModel({
     required this.id,
@@ -15,31 +17,35 @@ class PostModel {
     required this.contents,
     required this.postDate,
     required this.display,
+    required this.isLiked,
+    required this.initialLikeCount,
   });
 
   // Factory method to create a new instance with updated display value
   PostModel copyWithDisplay(int newDisplay) {
     return PostModel(
-      id: id,
-      userId: userId,
-      image: image,
-      contents: contents,
-      postDate: postDate,
-      display: newDisplay,
-    );
+        id: id,
+        userId: userId,
+        image: image,
+        contents: contents,
+        postDate: postDate,
+        display: newDisplay,
+        isLiked: isLiked,
+        initialLikeCount: initialLikeCount);
   }
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      id: json['ID'] ?? 0,
-      userId: json['USER_ID'] ?? 0,
-      image: json['IMAGE'] ?? "",
-      contents: json['CONTENTS'] ?? "",
-      postDate: json['POST_DATE'] != null
-          ? DateTime.parse(json['POST_DATE'])
-          : DateTime.now(),
-      display: json['DISPLAY'] ?? 0,
-    );
+        id: json['ID'] ?? 0,
+        userId: json['USER_ID'] ?? 0,
+        image: json['IMAGE'] ?? "",
+        contents: json['CONTENTS'] ?? "",
+        postDate: json['POST_DATE'] != null
+            ? DateTime.parse(json['POST_DATE'])
+            : DateTime.now(),
+        display: json['DISPLAY'] ?? 0,
+        isLiked: false,
+        initialLikeCount: 0);
   }
 
   Map<String, dynamic> toJson() => {
