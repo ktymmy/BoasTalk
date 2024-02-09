@@ -13,6 +13,7 @@ import '../changeover/moment.dart';
 import '../changeover/random.dart';
 //api
 import '../../api/post_api.dart';
+import '../../api/post_like_api.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -26,10 +27,33 @@ class _HomeState extends State<Home> {
   List<PostModel> posts = [];
   final List<ExpansionTileController> _controllers = [];
 
-  @override
+
+//   // 各ExpansionTileの状態を管理するリスト
+//   List<bool> isExpandedList = [];
+//   late bool likeFlg;
+//   late int likeCount;
+//   bool _doubletap = false;
+
+//   void toggleIcon() {
+//     //ボタン画像切替メソッド
+//     setState(() {
+//       //実機で実行時 assets/必ず前に付ける
+//       currentIcon == 'assets/page/MomentIcon.svg'
+//           ? currentIcon = 'assets/page/RandomIcon.svg'
+//           : currentIcon = 'assets/page/MomentIcon.svg';
+//     });
+//   }
+
+ 
   void initState() {
     super.initState();
     fetchData();
+    // likeFlg = false; // 初期のいいね状態
+    // likeCount; // 初期のいいね数
+
+    // 各ExpansionTileの状態を初期化
+    isExpandedList = List.generate(posts.length, (index) => false);
+
   }
 
   Future<void> fetchData() async {
@@ -120,6 +144,24 @@ class _HomeState extends State<Home> {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            GestureDetector(
+              onDoubleTap: () {
+                // ダブルタップ時の処理をここに追加
+                setState(() {
+                  sendLike(36, 430);
+                  sendLike(posts[index].userId, posts[index].id);
+                  print("ユーザーID : ${posts[index].userId}");
+                  print("ポストID :${posts[index].id}");
+                  _doubletap = true;
+                  // likeFlg = !likeFlg;
+                  // likeFlg ? likeCount += 1 : likeCount -= 1;
+                });
+              },
+              child: 
+//               CardComponent(
+//                 post: posts[index],
+//                 controllers: _controllers,
+//               ),
             CardComponent(
               post: posts[index],
               controllers: _controllers,
