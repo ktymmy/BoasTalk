@@ -121,10 +121,17 @@ class _MypageState extends State<Mypage> {
                       )
                     ],
                   ),
-                  Container(
-                    height: height * 0.61,
-                    width: width * 0.8,
-                    child: _card(),
+                  RefreshIndicator(
+                    onRefresh: () async {
+                      posts.sort((a, b) => b.postDate.compareTo(a.postDate));
+
+                      await fetchData();
+                    },
+                    child: Container(
+                      height: height * 0.61,
+                      width: width * 0.8,
+                      child: _card(),
+                    ),
                   ),
                 ],
               ),
@@ -195,7 +202,7 @@ class _MypageState extends State<Mypage> {
                     foregroundColor: Colors.white,
                     icon: Icons.archive,
                     borderRadius: BorderRadius.circular(200),
-                    label: 'アーカイブ',
+                    label: '削除',
                   ),
                 ),
               ]),

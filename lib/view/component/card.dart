@@ -1,15 +1,11 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../api/post_like_api.dart';
-import 'package:flutter_svg/svg.dart';
-// 定数
+//constant
 import '../../constant/color_Const.dart';
-// モデル
+//model
 import '../../model/post_model.dart';
 
 class CardComponent extends StatefulWidget {
   final PostModel post;
-
   final int index;
   final List<ExpansionTileController> _controllers;
 
@@ -26,19 +22,9 @@ class CardComponent extends StatefulWidget {
 }
 
 class _CardComponentState extends State<CardComponent> {
+  bool _isExpanded = false;
   bool _doubletap = false;
   final List<ExpansionTileController> _controller = [];
-  bool _isExpanded = false;
-  late bool likeFlg;
-  late int likeCount;
-  Timer? timer;
-
-  @override
-  void initState() {
-    super.initState();
-    // likeFlg = false; // 初期のいいね状態
-    // likeCount = widget.post.initialLikeCount; // 初期のいいね数
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,21 +48,21 @@ class _CardComponentState extends State<CardComponent> {
         minHeight: height * 0.12,
       ),
       child: ExpansionTile(
-//XXX:Statelessじゃないと動かないので見直す必要がある
+        //XXX:Statelessじゃないと動かないので見直す必要がある
         // controller: _controller[widget.post.id], //各カードにcontrollerを割り当て
 
         collapsedShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
-            width: 1.0, // ダブルタップ時の枠線の太さを設定
-            color: ColorConst.cardFrame2,
+            width: 1,
+            color: border(),
           ),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
-            width: 1.0, // ダブルタップ時の枠線の太さを設定
-            color: ColorConst.cardFrame2,
+            width: 1,
+            color: border(),
           ),
         ),
         onExpansionChanged: (bool expanded) {
@@ -96,22 +82,6 @@ class _CardComponentState extends State<CardComponent> {
               overflow: TextOverflow.ellipsis, //文字がoverflowしたら『...』に置き換える
               maxLines: _isExpanded ? 20 : 3, //開いているとき20行、閉じているとき3行
               style: const TextStyle(fontWeight: FontWeight.normal),
-        child: ExpansionTile(
-          //XXX:Statelessじゃないと動かないので見直す必要がある
-          // controller: _controller[widget.post.id], //各カードにcontrollerを割り当て
-
-          collapsedShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
-              width: 1,
-              color: border(),
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
-              width: 1,
-              color: border(),
             ),
           ],
         ),
