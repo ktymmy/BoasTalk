@@ -1,22 +1,32 @@
 import 'package:http/http.dart' as http;
 
-Future<void> sendLike(int user_id, int post_id) async {
+Future<void> sendLike(int user_id, int id) async {
   try {
-    final response = await http.post(
-      Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/like_insert.php'),
-      body: {
-        'user_id': user_id.toString(),
-        'post_id_$post_id': post_id.toString(),
-      },
+    // Server URL
+    final Uri url =
+        Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/like_2.php');
+
+    Map<String, String> formData = {
+      'user_id': user_id.toString(),
+      'id': id.toString(),
+    };
+    print(formData);
+
+    var response = await http.post(
+      url,
+      body: formData,
     );
 
+    print('Response status code: ${response.statusCode}');
+    print('Response body: ${response}');
+
     if (response.statusCode == 200) {
-      print('Data sent successfully');
-      print(post_id);
+      print(response.body);
+      print('いいね完了.');
     } else {
-      print('Failed to send data. Error: ${response.reasonPhrase}');
+      print('データ送信失敗: ${response.statusCode}');
     }
-  } catch (e) {
-    print('Error: $e');
+  } catch (error) {
+    print('Error: $error');
   }
 }

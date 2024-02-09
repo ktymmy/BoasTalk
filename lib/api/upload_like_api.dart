@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 
 Future<int> uploadLike(int userId) async {
   // urlをgitにあげない
-  var url = Uri.parse('');
+  var url =
+      Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/user_like.php');
 
   var data = {'user_id': userId.toString()};
 

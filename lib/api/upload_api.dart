@@ -6,7 +6,8 @@ Future<void> postDataToServer(
     String? image, String contents, int userID) async {
   try {
     // TODO:url書く
-    final Uri url = Uri.parse('');
+    final Uri url =
+        Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/insert.php');
 
     var request = http.MultipartRequest('POST', url)
       ..fields['contents'] = contents
