@@ -27,12 +27,11 @@ class _HomeState extends State<Home> {
   List<PostModel> posts = [];
   final List<ExpansionTileController> _controllers = [];
 
-
 //   // 各ExpansionTileの状態を管理するリスト
 //   List<bool> isExpandedList = [];
 //   late bool likeFlg;
 //   late int likeCount;
-//   bool _doubletap = false;
+  bool _doubletap = false;
 
 //   void toggleIcon() {
 //     //ボタン画像切替メソッド
@@ -44,7 +43,6 @@ class _HomeState extends State<Home> {
 //     });
 //   }
 
- 
   void initState() {
     super.initState();
     fetchData();
@@ -52,8 +50,7 @@ class _HomeState extends State<Home> {
     // likeCount; // 初期のいいね数
 
     // 各ExpansionTileの状態を初期化
-    isExpandedList = List.generate(posts.length, (index) => false);
-
+    // isExpandedList = List.generate(posts.length, (index) => false);
   }
 
   Future<void> fetchData() async {
@@ -157,17 +154,13 @@ class _HomeState extends State<Home> {
                   // likeFlg ? likeCount += 1 : likeCount -= 1;
                 });
               },
-              child: 
-//               CardComponent(
-//                 post: posts[index],
-//                 controllers: _controllers,
-//               ),
-            CardComponent(
-              post: posts[index],
-              controllers: _controllers,
-              index: index,
+              child: CardComponent(
+                post: posts[index],
+                controllers: _controllers,
+                index: index,
+              ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 10,
             )
           ],
