@@ -1,3 +1,5 @@
+//POSTをDELETEするAPI
+
 import 'package:http/http.dart' as http;
 
 Future<void> sendDeleteRequest(int id, int delete) async {

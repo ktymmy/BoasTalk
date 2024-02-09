@@ -3,15 +3,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 //constant
 import 'package:boastalk/constant/color_Const.dart';
-import '../../constant/String_Const.dart';
 //component
 import '../component/appbar.dart';
 import '../component/card.dart';
 //Model
 import '../../model/post_model.dart';
 import '../../model/users_model.dart';
-//controller
-import '../../controller/mypage_controller.dart';
+
 //page
 import '../page/calendar.dart';
 import '../login/signup.dart';
@@ -29,8 +27,14 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
   List<PostModel> posts = [];
   List<UsersModel> _users = [];
+  final List<ExpansionTileController> _controllers = [];
 
-//値を取得する関数
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
   Future<void> fetchData() async {
     final response = await getPost(1);
     final List<PostModel> fetchedPosts =
@@ -38,25 +42,13 @@ class _MypageState extends State<Mypage> {
 
     setState(() {
       posts = fetchedPosts;
+      posts.sort((a, b) => b.postDate.compareTo(a.postDate));
     });
-  }
 
-  final List<ExpansionTileController> _controllers = [];
-
-  @override
-  void initState() {
-    super.initState();
-    listState();
-    fetchData();
-    //投稿の数だけcontrollerを作成
+    // 投稿の数だけcontrollerを作成
     for (int i = 0; i < posts.length; i++) {
       _controllers.add(ExpansionTileController());
     }
-  }
-
-  void listState() {
-    // _posts = PostController().post;
-    _users = MypageController().user;
   }
 
   @override
@@ -72,9 +64,8 @@ class _MypageState extends State<Mypage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                //TODO:横揃える
                 SizedBox(
-                  height: height * 0.1,
+                  height: height * 0.04,
                   width: width * 0.3,
                   child: IconButton(
                     onPressed: () {
@@ -93,65 +84,57 @@ class _MypageState extends State<Mypage> {
               ],
             ),
             _UserProfileWidget(),
-            // 枠線
             Container(
-                height: height * 0.59,
-                width: width * 0.85,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: width * 0.3,
-                        ),
-                        const Text(
-                          '今日の投稿',
-                          style: TextStyle(color: ColorConst.main),
-                        ),
-                        SizedBox(
-                          width: width * 0.2,
-                        ),
-                        Container(
-                          child: IconButton(
-                            onPressed: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CalendarWidge()),
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.calendar_month_outlined,
-                              color: ColorConst.icon,
-                              size: 25,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    RefreshIndicator(
-                      onRefresh: () async {
-                        // データを更新する処理をここに追加
-                        await fetchData();
-                      },
-                      child: Container(
-                        height: height * 0.5,
-                        width: width * 0.8,
-                        child: _card(),
+              width: width * 0.85,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: width * 0.3,
                       ),
-                    ),
-                  ],
-                )),
+                      const Text(
+                        '今日の投稿',
+                        style: TextStyle(color: ColorConst.main),
+                      ),
+                      SizedBox(
+                        width: width * 0.2,
+                      ),
+                      Container(
+                        child: IconButton(
+                          onPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const CalendarWidge()),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.calendar_month_outlined,
+                            color: ColorConst.icon,
+                            size: 25,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Container(
+                    height: height * 0.61,
+                    width: width * 0.8,
+                    child: _card(),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-//プロフィール
   _UserProfileWidget() {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
@@ -167,7 +150,7 @@ class _MypageState extends State<Mypage> {
             child: Row(
               children: [
                 Text(
-                  _users.isNotEmpty ? _users[0].userName : '',
+                  _users.isNotEmpty ? _users[0].userName : 'katayama',
                   style: TextStyle(
                     fontSize: fontSize,
                     fontWeight: fontBold,
@@ -191,9 +174,6 @@ class _MypageState extends State<Mypage> {
     );
   }
 
-  bool tap = false;
-  final _success = GlobalKey<FormState>();
-
   Widget _card() {
     return ListView.builder(
       shrinkWrap: false,
@@ -209,20 +189,20 @@ class _MypageState extends State<Mypage> {
                   child: SlidableAction(
                     onPressed: (context) async {
                       print(posts[index].id);
-                      final success =
-                          await sendDeleteRequest(posts[index].id, 1);
+                      await sendDeleteRequest(posts[index].id, 1);
                     },
                     backgroundColor: Color(0xFFFE4A49),
                     foregroundColor: Colors.white,
-                    icon: Icons.delete,
+                    icon: Icons.archive,
                     borderRadius: BorderRadius.circular(200),
-                    label: '削除',
+                    label: 'アーカイブ',
                   ),
                 ),
               ]),
               child: CardComponent(
                 post: posts[index],
                 controllers: _controllers,
+                index: index,
               ),
             ),
             SizedBox(

@@ -8,10 +8,10 @@ import 'package:http/http.dart' as http;
 apiClient() async {
   WidgetsFlutterBinding.ensureInitialized();
   // getRecipe 関数を呼び出し、結果を待機
-  List<dynamic> recipeData = await getPost(1);
+  List<dynamic> Data = await getPost(1);
 
   // 取得したデータを出力
-  print("Recipe Data: $recipeData");
+  print("Recipe Data: $Data");
 }
 
 Future<List<dynamic>> getPost(int id) async {

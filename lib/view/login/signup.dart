@@ -1,5 +1,5 @@
 //新規登録画面
-import 'package:boastalk/api/signup_api.dart';
+import 'package:boastalk/api/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; //svg
 
@@ -53,10 +53,10 @@ class _MyWidgetState extends State<Signup> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConst.base,
-        body: Column(
+    return Scaffold(
+      backgroundColor: ColorConst.base,
+      body: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(

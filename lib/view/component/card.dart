@@ -9,13 +9,16 @@ import '../../model/post_model.dart';
 
 class CardComponent extends StatefulWidget {
   final PostModel post;
+
+  final int index;
   final List<ExpansionTileController> _controllers;
 
-  const CardComponent(
-      {super.key,
-      required PostModel post,
-      required List<ExpansionTileController> controllers})
-      : post = post,
+  const CardComponent({
+    super.key,
+    required PostModel post,
+    required List<ExpansionTileController> controllers,
+    required this.index,
+  })  : post = post,
         _controllers = controllers;
 
   @override
@@ -93,6 +96,22 @@ class _CardComponentState extends State<CardComponent> {
               overflow: TextOverflow.ellipsis, //文字がoverflowしたら『...』に置き換える
               maxLines: _isExpanded ? 20 : 3, //開いているとき20行、閉じているとき3行
               style: const TextStyle(fontWeight: FontWeight.normal),
+        child: ExpansionTile(
+          //XXX:Statelessじゃないと動かないので見直す必要がある
+          // controller: _controller[widget.post.id], //各カードにcontrollerを割り当て
+
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              width: 1,
+              color: border(),
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              width: 1,
+              color: border(),
             ),
           ],
         ),
@@ -122,7 +141,7 @@ class _CardComponentState extends State<CardComponent> {
   }
 
   Color border() {
-    return widget.post.id % 2 == 0
+    return widget.index % 2 == 0
         ? ColorConst.cardFrame1
         : ColorConst.cardFrame2;
   }

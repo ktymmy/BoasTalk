@@ -17,43 +17,43 @@ import '../../api/post_like_api.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
-
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  String currentIcon = 'assets/page/MomentIcon.svg'; //現在のアイコン定義
+  String currentIcon = 'assets/page/MomentIcon.svg'; // 現在のアイコン定義
 
   List<PostModel> posts = [];
   final List<ExpansionTileController> _controllers = [];
 
-  // 各ExpansionTileの状態を管理するリスト
-  List<bool> isExpandedList = [];
-  late bool likeFlg;
-  late int likeCount;
-  bool _doubletap = false;
 
-  void toggleIcon() {
-    //ボタン画像切替メソッド
-    setState(() {
-      //実機で実行時 assets/必ず前に付ける
-      currentIcon == 'assets/page/MomentIcon.svg'
-          ? currentIcon = 'assets/page/RandomIcon.svg'
-          : currentIcon = 'assets/page/MomentIcon.svg';
-    });
-  }
+//   // 各ExpansionTileの状態を管理するリスト
+//   List<bool> isExpandedList = [];
+//   late bool likeFlg;
+//   late int likeCount;
+//   bool _doubletap = false;
 
-  //データをリスト形式でとってきて、ランダムに並び替え
+//   void toggleIcon() {
+//     //ボタン画像切替メソッド
+//     setState(() {
+//       //実機で実行時 assets/必ず前に付ける
+//       currentIcon == 'assets/page/MomentIcon.svg'
+//           ? currentIcon = 'assets/page/RandomIcon.svg'
+//           : currentIcon = 'assets/page/MomentIcon.svg';
+//     });
+//   }
+
+ 
   void initState() {
     super.initState();
-    posts.shuffle();
     fetchData();
     // likeFlg = false; // 初期のいいね状態
     // likeCount; // 初期のいいね数
 
     // 各ExpansionTileの状態を初期化
     isExpandedList = List.generate(posts.length, (index) => false);
+
   }
 
   Future<void> fetchData() async {
@@ -64,12 +64,26 @@ class _HomeState extends State<Home> {
     setState(() {
       posts = fetchedPosts;
     });
-    posts.shuffle();
 
-    //投稿の数だけcontrollerを作成
+    // 投稿の数だけcontrollerを作成
     for (int i = 0; i < posts.length; i++) {
       _controllers.add(ExpansionTileController());
     }
+  }
+
+  void toggleIcon() {
+    // ボタン画像切替メソッド
+    setState(() {
+      currentIcon = currentIcon == 'assets/page/MomentIcon.svg'
+          ? 'assets/page/RandomIcon.svg'
+          : 'assets/page/MomentIcon.svg';
+
+      if (currentIcon == 'assets/page/RandomIcon.svg') {
+        posts.sort((a, b) => b.postDate.compareTo(a.postDate));
+      } else {
+        posts.shuffle();
+      }
+    });
   }
 
   @override
@@ -82,32 +96,35 @@ class _HomeState extends State<Home> {
         onPressed: () async {
           if (currentIcon == 'assets/page/MomentIcon.svg') {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Moment()));
+              context,
+              MaterialPageRoute(builder: (context) => const Moment()),
+            );
           } else if (currentIcon == 'assets/page/RandomIcon.svg') {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Random()));
+              context,
+              MaterialPageRoute(builder: (context) => const Random()),
+            );
           }
-          await Future.delayed(Duration(seconds: 1)); // 1秒待機
-          //シャッフル
-          if (currentIcon == 'assets/page/MomentIcon.svg') {
-            posts.sort((a, b) => b.postDate.compareTo(a.postDate));
-          } else if (currentIcon == 'assets/page/RandomIcon.svg') {
-            posts.shuffle();
-          }
+          await Future.delayed(const Duration(seconds: 1)); // 1秒待機
+
           toggleIcon();
 
           Navigator.pop(context);
 
+          // 折りたたみ
           for (var controller in _controllers) {
             controller.collapse();
           }
         },
-        child: (SvgPicture.asset(currentIcon)),
+        child: SvgPicture.asset(currentIcon),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          // データを更新する処理をここに追加
-          await fetchData();
+          if (currentIcon == 'assets/page/RandomIcon.svg') {
+            posts.sort((a, b) => b.postDate.compareTo(a.postDate));
+          } else {
+            await fetchData();
+          }
         },
         child: Container(
           padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
@@ -118,7 +135,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  //CardComponent
+  // CardComponent
   Widget _card() {
     return ListView.builder(
       shrinkWrap: false,
@@ -140,12 +157,17 @@ class _HomeState extends State<Home> {
                   // likeFlg ? likeCount += 1 : likeCount -= 1;
                 });
               },
-              child: CardComponent(
-                post: posts[index],
-                controllers: _controllers,
-              ),
+              child: 
+//               CardComponent(
+//                 post: posts[index],
+//                 controllers: _controllers,
+//               ),
+            CardComponent(
+              post: posts[index],
+              controllers: _controllers,
+              index: index,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             )
           ],
