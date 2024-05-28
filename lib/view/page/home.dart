@@ -125,15 +125,13 @@ class _HomeState extends State<Home> {
             GestureDetector(
               onDoubleTap: () {
                 // ダブルタップ時の処理をここに追加
-                setState(() {
-                  sendLike(36, 430);
-                  sendLike(posts[index].userId, posts[index].id);
-                  print("ユーザーID : ${posts[index].userId}");
-                  print("ポストID :${posts[index].id}");
-                  _doubletap = true;
-                  // likeFlg = !likeFlg;
-                  // likeFlg ? likeCount += 1 : likeCount -= 1;
-                });
+                // setState(() {
+                //   sendLike(36, 430);
+                //   sendLike(posts[index].userId, posts[index].id);
+                //   print("ユーザーID : ${posts[index].userId}");
+                //   print("ポストID :${posts[index].id}");
+                //   _doubletap = !_doubletap;
+                // });
               },
               child: CardComponent(
                 post: posts[index],

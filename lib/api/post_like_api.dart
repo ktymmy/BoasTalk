@@ -2,7 +2,6 @@ import 'package:http/http.dart' as http;
 
 Future<void> sendLike(int user_id, int id) async {
   try {
-    // Server URL
     final Uri url =
         Uri.parse('https://click.ecc.ac.jp/ecc/sys2_23_bloom/like_2.php');
 

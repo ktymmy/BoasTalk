@@ -69,10 +69,10 @@ class _MypageState extends State<Mypage> {
                   width: width * 0.3,
                   child: IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Signup()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => Signup()),
+                      // );
                     },
                     icon: const Icon(
                       Icons.settings,
@@ -128,7 +128,7 @@ class _MypageState extends State<Mypage> {
                       await fetchData();
                     },
                     child: Container(
-                      height: height * 0.61,
+                      height: height * 0.595,
                       width: width * 0.8,
                       child: _card(),
                     ),
